@@ -1,2 +1,10 @@
-/target
-/vscode
+# Backend 
+backend/target
+backend/vscode
+
+# Frontend
+lane-sim/node_modules
+lane-sim/dist
+lane-sim/.next
+lane-sim/.vscode
+lane-sim/src-tauri/target
