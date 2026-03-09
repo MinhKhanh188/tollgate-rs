@@ -8,3 +8,8 @@ lane-sim/dist
 lane-sim/.next
 lane-sim/.vscode
 lane-sim/src-tauri/target
+
+# tollgate-fe
+tollgate-fe/target
+tollgate-fe/.vscode
+tollgate-fe/node_modules
