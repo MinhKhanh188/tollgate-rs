@@ -25,6 +25,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             // Build our application with a route
             let app = Router::new()
                 .route("/handshake", post(api::routes::handshake))
+                .route("/transactions", post(api::routes::create_transaction))
                 .layer(CorsLayer::permissive())
                 .with_state(pool);
 

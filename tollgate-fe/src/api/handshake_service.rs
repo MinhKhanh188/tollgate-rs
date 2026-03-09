@@ -1,14 +1,14 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct HandshakeRequest {
     pub request_id: i64,
     pub station_id: String,
     pub lane_id: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct HandshakeResponse {
     pub session_id: String,
     pub status: String,
