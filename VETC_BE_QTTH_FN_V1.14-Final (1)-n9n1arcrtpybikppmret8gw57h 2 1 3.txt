@@ -1,0 +1,4841 @@
+﻿FPT INFORMATION SYSTEM 
+
+ 
+
+ 
+
+ 
+
+Công ty TNHH thu phí tự động VETC 
+
+ 
+
+TÀI LIỆU ĐẶC TẢ 
+VIỆC TÍCH HỢP CHO CÁC ỨNG DỤNG TẠI TRẠM 
+VỚI HỆ THỐNG TÁC NGHIỆP LÕI TẠI TRUNG TÂM 
+PHỤC VỤ HOẠT ĐỘNG THU PHÍ XE ĐI QUA TRẠM 
+
+GIAI ĐOẠN 1 
+ 
+
+ 
+
+Version:1.14 
+
+  
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+Publication Details 
+
+Change Record  
+
+Versio Date Author Purpose 
+n 
+
+0.1 29/07/2015 Đặng Đình Tạo mới 
+Trung 
+
+0.2 3/9/2015 Đặng Đình Cập nhật qui trình thu phí trừ 
+Trung tiền khi xe qua trạm 
+
+1.0 4/9/2015 Đặng Đình Cập nhật sau review nội bộ 
+Trung 
+
+1.0.1 4/9/2015 Đặng Đình Cập nhật sau review nội bộ lần 
+Trung 2 
+
+1.1 9/9/2015 Đặng Đình Cập nhật sau review với VETC 
+Trung lần 1 và review nội bộ. 
+
+1.2 10/9/2015 Đặng Đình Cập nhật sau review nội bộ. 
+Trung 
+
+1.3 24/09/2015 Đặng Đình Bỏ phƣơng án trừ tiền ngay, 
+Trung giữ phƣơng án giữ tiền checkin 
+
+và commit 
+
+1.4 25/09/2015 Thiều Hồng Tứ Bổ sung etag trong bản tin 
+commit, rollback để định tuyến 
+
+1.5 28/09/2015 Thiều Hồng Tứ Bổ sung đặc tả file change 
+status list đồng bộ 6 tiếng 1 lần. 
+
+1.6 15/03/2016 Đặng Đình Bổ sung mô tả cho một số bản tin: 
+Trung Checkin resp, Commit, Rollback, 
+
+Charge, Charge resp . 
+
+Cập nhật phương thức mã hóa giao 
+thức AES 128 thay cho TripleDes  
+
+Cập nhật kích thước trường 
+CommandId từ 1 bytes lên 4 bytes, 
+Lane ID từ 2 lên 4 bytes, Status từ 1 
+lên 4 bytes.  
+
+Cập nhật kích thước trường ETAG từ 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  2 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+12 bytes lên 24 bytes, và cập  nhật 
+chiều dài bản tin tổng kèm theo.  
+
+Bổ sung danh sách trạng thái. 
+
+Bổ sung danh sách loại phương tiện. 
+
+Bổ sung mô tả kí tự xuống dòng cho 
+file CSV. 
+
+Sửa lại một số nội dung nhỏ liên quan 
+đến câu từ khi chuyển tên bản tin từ 
+RESERVE sang CHECKIN 
+
+1.7 28/03/2016 Đặng Đình Bổ sung trạng thái trả về của một số 
+Trung bản tin connect, checking, commit, 
+
+rollback, charge. 
+
+Cập nhật kích thước trả về của 
+ChargeResp từ 78 xuống 74 
+
+Đổi giao thức từ tích hợp file từ SCP 
+sang SFTP. 
+
+Bổ sung mô tả chi tiết tích hợp cho 
+từng loại file: BL, WL, SL, ETDR, 
+MTDR, OTDR, Media. 
+
+ 
+
+ 
+
+1.8 07/04/2016 Đặng Đình Đổi khái niệm TOLL thành STATION. 
+Trung Cập nhật mã trạng thái trả về của các 
+
+bản tin response. 
+
+Bổ sung loại biển số trong bản tin 
+CHECKIN RESP trả về (biển trắng, biển 
+xanh, biển đỏ - vì biển số có thể trùng 
+nhau). 
+
+1.9 18/05/2015 Đặng Đình Bổ sung thêm 03 trường trong bản 
+Trung tin CHECKIN: PLATE,TID, HASHVALUE 
+
+(3.2.2, 3.3.2, 4.1.3.7) 
+
+Bổ sung thêm 01 trường trong bản 
+tin COMMIT: VEHICLE LENGTH 
+(4.1.3.9) 
+
+Cập nhật lại các mục liên quan khi 
+kích thước và thông tin bổ sung thay 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  3 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+đổi 
+
+Cập nhật định dạng tên file ảnh: bổ 
+sung thông tin ngày giờ chụp ảnh và 
+làn trong ảnh (4.2.1) 
+
+Cập nhật mô tả cho việc đặt tên file 
+ảnh, lưu trữ file ảnh cho các giao dịch 
+MTC và ETC (ảnh hưởng 4.2.1, 
+4.2.3.4, 4.2.3.5) 
+
+1.9.1 15/06/2016 Đặng Đình Cập nhật danh mục trạng thái phản 
+Trung hồi của Status (Thêm trạng thái 105, 
+
+và sửa lỗi mô tả của một số trạng thái 
+cũ). Các bản tin ảnh hưởng 
+CHECKIN_RESP, COMMIT_RESP, 
+CHARG_RESP 
+
+1.9.2  22/09/2016  Lê Tuấn Hiệp  Cập nhật độ dài trường TID trong bản 
+tin CHECKIN từ 12 BYTE lên 24 BYTE, 
+kiểu dữ liệu String  
+
+1.10.1 08/12/2016 Đặng Đình Checkin Response: bổ sung loại vé 
+Trung phân biệt rõ cho 0-tháng, 2-quí,3-
+
+năm thay vì chỉ là vé lượt hay vé 0-
+tháng/quí/năm như hiện tại 
+
+Commit: bổ sung thêm trường 
+Transaction Amount, FE sẽ cần 
+truyền giá trị vào. Mặc định bằng 0 là 
+sẽ áp theo cách tính của BE. 
+
+Cập nhật mô tả MTDR:  
+
+ Thêm trường Request Id 
+
+ ETAG 
+
+ Mô tả chuẩn hóa lại loại vé 
+(Ticket Type) 
+
+o 0-Vé tháng 
+
+o 1-Vé lượt 
+
+o 2-Vé quí 
+
+o 3-Vé năm 
+
+ Mô tả chuẩn hóa lại Vehicle 
+Type 
+
+Cập nhật mô tả OTDR 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  4 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+ Thêm trường Request Id 
+
+1.10.2 09/12/2016 Đặng Đình Sửa lỗi về đội dài bản tin CHECKIN, 
+Trung COMMIT 
+
+1.10.3 20/12/2016 Đặng Đình  CHECKIN: Đổi kích thước 
+Trung HashValue từ 8 bytes sang 16 
+
+bytes. 
+
+ Cập nhật mô tả của trường 
+loại vé PlateType trong bản 
+tin CHECKIN_RESP 
+
+ ETDR file: mô tả rõ hơn nội 
+dung của Vehicle Type, Plate 
+Type, Price (trong trường 
+hợp có bổ sung commit 
+amount) 
+
+1.11 07/06/2017 Nguyên Công  Bổ xung thêm ETDR file cho 
+Học trạm kín, thêm trường: 
+
+STATION_ID_IN, LANE_IN, 
+ETAG_IN, PLATE_IN, 
+COMPLETE_DATETIME_IN, 
+CHECKIN_DATETIME_IN, 
+PRICE_IN, VEHICLE_TYPE_IN, 
+TICKET_TYPE_IN, 
+ANPR_STATUS_IN, 
+TRANSACTION_STATUS_IN, 
+IMAGE_FILENAMES_IN, 
+ITEM_TYPE_IN 
+
+ Bổ xung thêm OTDR file cho 
+trạm kín, thêm trường: 
+STATION_ID_IN, LANE_IN, 
+ETAG_IN, PLATE_IN, 
+COMPLETE_DATETIME_IN, 
+CHECKIN_DATETIME_IN, 
+TRANSACTION_STATUS_IN, 
+IMAGE_FILENAMES_IN 
+
+1.11.1 22/08/2017 Nguyễn Công  Bổ xung thêm trạm vào, trạm 
+Học ra đối với xuất file statuslist 
+
+cho trạm kín 
+
+ Bỏ 3 trường trong file ETDR 
+đối với trạm kín: PRICE_IN, 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  5 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+PRICE_TYPE_IN, 
+TRANSACTION_STATUS_IN, 
+
+1.11.2 14/9/2017 Nguyễn Công  Update lỗi typing version 
+Học 1.11.1, bổ sung trường trong 
+
+file ETDR đối với trạm kín 
+VEHICLE_TYPE_IN  
+
+1.11.3 04/10/2017 Lê Quang Hùng  Làm rõ mục 4.1.3.8: mô tả 
+bản tin CHECKIN RESP của 
+thu phí kín 
+
+ Cập nhật mục 4.2.3.8: cấu 
+trúc file MTC qua trạm kín. 
+Bổ sung trường: 
+StationIN,LaneIN,PlateIN, 
+ETAGIN,DatetimeIN,VehicleT
+ypeIN,ImageIN,IOType, 
+TicketID 
+
+1.12 14/06/2018 Vũ Minh Phúc  Mục 4.1.3.8 CHECKIN RESP 
+bổ sung trường: Price Ticket 
+Type 
+
+ Mục 4.1.3.9 COMMIT bổ 
+sung trường: Weight, Reason 
+ID 
+
+ Mục 4.1.3.11 ROLLBACK bổ 
+sung trường: Weight, Reason 
+ID 
+
+1.12.1 20/06/2018 Lƣơng Đình  Mục 4.2.3.10: Bổ sung danh 
+Tháp sách vé tháng/quý 
+
+1.13 08/08/2018 Vũ Minh Phúc  Mục 4.1.3: Bổ sung hàm 
+4.1.3.15 PASS_AND_HOLD. 
+
+Nguyễn Công 
+Học  Mục 4.1.3: Bổ sung hàm 
+
+4.1.3.16 
+PASS_AND_HOLD_RESP 
+
+ Mục 4.2.3.4: Bổ sung trường 
+TRANS_TYPE với giao dịch 
+ETDR từ trạm(chỉ cho các 
+trạm giống an sương an lạc) 
+
+1.14 24/11/2018 Phạm Ngọc  Bổ xung quản lý theo phiên 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  6 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Hoài bản 
+
+ Thêm phiên bản v1.2-filesync 
+cho export file WL, BL, SL, PL. 
+
+ Sửa một số lỗi trong tài liệu, 
+cập nhật thông tin theo thực 
+tế, mô tả thêm cho rõ nghĩa. 
+
+ 
+  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  7 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+Document Properties  
+
+File location:  
+
+File name: VETC_BE_QTTH_FN_V1.14.docx 
+
+Last updated: 24/11/2018 
+
+ 
+
+  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  8 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+Document authorisation  
+
+Released by FPT Information System  
+
+____________________________  
+
+  
+
+( )  
+
+/          /  
+ 
+
+Review by:   
+ 
+
+______________________________ ______________________________ 
+
+  
+
+  
+
+/          / /          / 
+ 
+
+Concurred by:  Concurred by: 
+
+______________________________ ______________________________ 
+
+  
+
+  
+
+/          / /          / 
+
+ 
+
+  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  9 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+MỤC LỤC 
+1 GIỚI THIỆU .................................................................................................................................................. 13 
+
+1.1 Mục tiêu ............................................................................................................................................. 13 
+
+1.2 Đối tượng ........................................................................................................................................... 13 
+
+1.3 Nội dung ............................................................................................................................................. 13 
+
+2 TỔNG QUAN VỀ NGHIỆP VỤ ....................................................................................................................... 13 
+
+3 MÔ TẢ LUỒNG XỬ LÝ THU PHÍ .................................................................................................................... 14 
+
+3.1 QUI TRÌNH KẾT NỐI FRONTEND – BACKEND ...................................................................................... 14 
+
+3.1.1 Sơ đồ diễn tiến ............................................................................................................................... 14 
+
+3.1.2 Đặc tả chi tiết ................................................................................................................................. 14 
+
+3.2 PHƯƠNG ÁN THU PHÍ SAU KHI ĐÓNG BARRIER TRẠM HỞ ............................................................... 17 
+
+3.2.1 Sơ đồ diễn tiến ............................................................................................................................... 17 
+
+3.2.2 Đặc tả chi tiết ................................................................................................................................. 18 
+
+3.3 PHƯƠNG ÁN THU PHÍ SAU KHI ĐÓNG BARRIER TRẠM KÍN ............................................................... 23 
+
+3.3.1 Sơ đồ diễn tiến ............................................................................................................................... 23 
+
+3.3.2 Đặc tả chi tiết ................................................................................................................................. 23 
+
+4 ĐẶC TẢ GIAO THỨC TÍCH HỢP .................................................................................................................... 32 
+
+4.1 Quản lý phiên bản giao thức tích hợp ................................................................................................ 32 
+
+4.1.1 Phiên bản cho giao thức yêu cầu và phản hồi ............................................................................... 32 
+
+4.1.2 Phiên bản cho giao thức truyền nhận file ...................................................................................... 32 
+
+4.2 GIAO THỨC YÊU CẦU VÀ PHẢN HỒI ................................................................................................... 33 
+
+4.2.1 Giao thức kết nối ............................................................................................................................ 33 
+
+4.2.2 Cấu trúc bản tin .............................................................................................................................. 33 
+
+4.2.3 Danh sách lệnh và đặc tả dữ liệu ................................................................................................... 35 
+
+4.2.4 Yêu cầu về tải xử lý ........................................................................................................................ 54 
+
+4.3 GIAO THỨC TRUYỀN NHẬN FILE ......................................................................................................... 56 
+
+4.3.1 Giao thức kết nối ............................................................................................................................ 56 
+
+4.3.2 Cấu trúc file lịch sử chi tiết: ............................................................................................................ 57 
+
+4.3.3 Danh sách file và đặc tả dữ liệu ..................................................................................................... 57 
+
+4.3.4 Yêu cầu về tải xử lý ........................................................................................................................ 78 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  10 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+5 PHƯƠNG PHÁP BẢO ĐẢM AN TOÀN THÔNG TIN ....................................................................................... 79 
+
+5.1 BẢO MẬT HẠ TẦNG VÀ HỆ THỐNG .................................................................................................... 79 
+
+5.1.1 Đường truyền vật lý giữa Front End và Back End .......................................................................... 79 
+
+5.1.2 Firewall và IPS ................................................................................................................................ 79 
+
+5.1.3 Hệ thống Antivirus ......................................................................................................................... 79 
+
+5.2 BẢO MẬT LỚP ỨNG DỤNG ................................................................................................................. 80 
+
+5.2.1 Authentication, Authorisation và Accounting ................................................................................ 80 
+
+5.2.2 Đảm bảo cân bằng CIA ................................................................................................................... 80 
+
+ 
+
+  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  11 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+DANH MỤC TỪ KHÓA HOẶC TỪ VIẾT TẮT TRONG TÀI LIỆU 
+
+Từ khóa/ Từ viết tắt Mô tả 
+FE (Front End) Front End: là hệ thống phần mềm tại trạm 
+BE (Back End) Back End là hệ thống xử lý trung tâm 
+Strict Qui trình/bước bắt buộc phải có trong qui trình 
+Opt Option: xảy ra khi điều kiện kèm theo được thỏa mãn. 
+Loop Lặp mãi khi điều kiện được thỏa mãn. 
+ETDR Electronic Toll Data Record 
+MTDR Manual Toll Data Record 
+White List Danh sách xe ưu tiên qua trạm mà ko bị thu phí. 
+Black List Danh sách xe bị cấm/có vấn đề cần xử lý tại trạm 
+MTC Manual Toll Collection: thu phí tay 
+ETC Electronic Toll Collection: thu phí không dừng 
+Session Phiên đăng nhập, hay phiên kết nối. Được tạo ra khi một kết nối 
+
+được thiết lập thành công. 
+Req Request ID. Mã duy nhất do Front End tạo ra. 
+RequestID Mã duy nhất do Front End tạo ra, đặc trưng cho một yêu cầu gọi 
+
+tới Back End. 
+Toll Phí cầu đường 
+Station Trạm (thu phí) 
+Lane Làn thu phí 
+Tripple DES (3DES) Triple Data Encryption Algorithm (TDEA or Triple DEA) 
+
+Giao thức mã hóa 2 chiều. 
+AES Advanced Encryption Standard 
+Binary Dữ liệu nhị phân 
+Header Phần đầu của bản tin 
+Body Phần nội dung của bản tin 
+TCOC Toll Collection Online Charging. Giao thức thu phí qua trạm 
+
+online. 
+IP IP Address. Địa chỉ IP theo giao thức internet. 
+eTag Thẻ gắn trên xe định danh phương tiện 
+EPC Electronic Product Code. Mã ETAG 
+ETDR ETC Transaction Detail Record. File chi tiết lịch sử giao dịch ETC 
+MTDR MTC Transaction Detail Record. File chi tiết lịch sử giao dịch MTC 
+OTDR OFFLINE Transaction Detail Record. File chi tiết lịch sử ETC khi kết 
+
+nối giữa FE và BE bị lỗi. 
+ 
+
+  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  12 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+1 GIỚI THIỆU 
+
+1.1 Mục tiêu 
+Đây là tài liệu giữa VETC & FPT, trong đó FPT đề xuất tiêu chuẩn để các hệ thống tại trạm tích hợp với Hệ 
+thống tác nghiệp lõi tại trung tâm 
+
+Tài liệu là căn cứ để hiểu và lực chọn, thống nhất phương án tích hợp giữa Front End và Back End. 
+
+1.2 Đối tƣợng 
+Đối tượng đọc tài liệu là các cán bộ kĩ thuật, nghiệp vụ và lãnh đạo VETC, FPT, và các đại diện của Front End 
+theo sự ủy quyền của VETC. 
+
+1.3 Nội dung 
+FPT đề xuất phương án tích hợp Front End và Back End theo hướng: 
+
+- Xử lý thu phí Online tại hệ thống phần mềm lõi tại trung tâm. 
+- Trình bày  phương án theo thu phí sau khi đóng Barrier, xe qua trạm. 
+
+Việc kết nối giữa Front End và Back End theo phương thức Socket, Tcp/IP. Bản tin dưới dạng nhị phân đã 
+được mã hóa trên đường truyền. 
+
+2 TỔNG QUAN VỀ NGHIỆP VỤ 
+Dựa trên lộ trình triển khai hệ thống cung cấp dịch vụ thu phí tự động được chia thành 04 giai đoạn, việc tích 
+hợp giữa hệ thống ứng dụng tại trạm và hệ thống tác nghiệp lõi để xử lý giao dịch khi xe qua trạm cần phải 
+chặt chẽ và thông suốt nhằm đảm bảo yêu cầu tương ứng cho từng giai đoạn.  
+
+Tại giai đoạn 1 – đơn làn, có barie, duy trì cả MTC và ETC, thông xe trong trường hợp ETC khi xe có đủ số dư 
+tài khoản thu phí – việc tích hợp giữa 2 hệ thống cần đáp ứng yêu cầu nghiệp vụ sau:  
+
+- Khi phương tiện lưu thông qua trạm thu phí, nếu phương tiện có gắn thẻ eTag hợp lệ (hệ thống đọc 
+được thẻ eTag) và có đủ số dư theo quy định trong tài khoản eTag, thì barie tự động mở cho phương 
+tiện lưu thông qua trạm. 
+
+- Khi phương tiện có gắn thẻ eTag hợp lệ (hệ thống đọc được thẻ eTag) nhưng không có đủ số dư 
+trong tài khoản eTag theo quy định, hoặc phương tiện chưa gắn thẻ eTag thì hệ thống chuyển sang 
+chế độ thu phí MTC. 
+
+- Thực hiện cập nhật danh sách các loại xe ưu tiên/xe cấm vào hệ thống (tại trạm và trung tâm). 
+
+Theo mô hình quản lý tập trung, việc tích hợp thực hiện truyền nhận các thông tin: 
+
+- Phục vụ việc xử lý trực tuyến khi xe đi qua trạm thu phí: 
+o Truy vấn lấy thông tin về phương tiện  
+o Truy vấn số dư tài khoản: đủ trả phí hay không? 
+o Thực hiện trừ phí qua trạm 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  13 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Phục vụ việc xử lý giao dịch sau khi phương tiện đi qua trạm thu phí:  
+o Truyền nhận tệp tin dữ liệu lịch sử giao dịch xe qua trạm thu phí MTC/ETC 
+o Truyền nhận tệp tin hình ảnh chụp phương tiện xe qua trạm thu phí ETC 
+
+- Phục vụ việc đồng bộ danh sách phương tiện xe/chủ phương tiện xe thuộc dạng đặc biệt: 
+o Danh sách xe ưu tiên 
+o Danh sách xe  
+
+3 MÔ TẢ LUỒNG XỬ LÝ THU PHÍ 
+
+3.1 QUI TRÌNH KẾT NỐI FRONTEND – BACKEND 
+3.1.1 Sơ đồ diễn tiến 
+FE & BE Toll Collection Integration: Connection Management
+
+Front End Back End
+
+strict [FE quản lý duy trì trạng thái kết nối sẵn sàng tới BE]
+
+opt [Khi chưa có kết nối/ Kết nối bị lỗi]
+
+1: connect(requestid, username, password, toll)
+
+2: connect resp(requestid, sessionid, status)
+
+opt [Khi kết nối đã được thiết lập]
+3: shake(requestid,sessionId)
+
+4: shake resp(requestid,status)
+
+opt [Khi muốn ngắt kết nối]
+
+11: terminate(requestid, sessionId)
+
+12: terminate resp(requestid, status)
+
+ 
+
+3.1.2 Đặc tả chi tiết 
+1. Để thực hiện được giao dịch thu phí, Front End cần phải thiết lập được một kết nối tới Back End. Kết 
+
+nối này cần được giữ trong suốt quá trình thu phí. Nếu kết nối bị lỗi, hoặc bị ngắt, Front End cần chủ 
+động thiết lập lại kết nối. 
+
+2. Để thiết lập được kết nối, mỗi Front End sẽ được cung cấp một tài khoản đăng nhập, IP được phép 
+(cả mức Firewall và ứng dụng), và một mã khóa để mã hóa và giả mã bản tin. Front End sau khi thiết 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  14 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+lập kết nối socket, sẽ cần gửi bản tin 1:CONNECT để xác thực. Nếu đăng nhập được Back End xác 
+thực thành công (1:CONNECT), Back End sẽ tạo một Socket kết nối, và trả cho Front End bản tin 
+(2:CONNECT RESP) có một trường là Session ID duy nhất cho mỗi phiên đăng nhập. Session ID này sẽ 
+là đầu vào cho mọi yêu cầu/giao dịch từ Front End đến Backend. 
+
+Bản tin liên quan: 
+
+a. Bản tin CONNECT sẽ gồm 4 thông tin cơ bản là: 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Username: tài khoản cho Front End 
+iii. Password: mật khẩu  
+iv. Station ID: ID của trạm thu phí. Thông tin để tra cứu hậu kiểm. 
+
+b. Bản tin CONNECT RESP sẽ gồm thông tin cơ bản là: 
+i. Request id: id của bản tin. 
+
+ii. Session Id: phiên đăng nhập khi thành công. Thông tin này sẽ được Front End sử 
+dụng trong mọi giao dịch/ yêu cầu trong suốt  phiên hoạt động. 
+
+iii. Status: trạng thái đăng nhập thành công/thất bại. 
+3. Để giữ được kết nối, định kì Front End sẽ cần gửi một bản tin bắt tay (3:SHAKE) đến Back End. Khi kết 
+
+nối thành công Back End sẽ gửi bản tin phản hồi bắt tay (4:SHAKE RESP) để thông báo giữ kết nối 
+thành công. Sau một khoảng thời gian nhất định, nếu không có giao dịch hoặc không có bản tin bắt 
+tay, BACK END sẽ thực hiện đóng kết nối trên Session ID đã định. 
+
+Bản tin liên quan: 
+
+a. Bản tin SHAKE sẽ gồm 2 thông tin cơ bản là: 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Session Id: phiên đăng nhập. 
+b. Bản tin SHAKE RESP sẽ gồm thông tin cơ bản là: 
+
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+ii. Status: trạng thái bắt tay thành công/thất bại. 
+
+4. Để thực hiện đóng kết nối chủ động từ Front End, Front End có thể gửi bản tin hủy kết nối 
+(11:TERMINATE) đến Back End. Hủy kết nối thành công, Back End sẽ gửi bản tin phản hồi 
+(12:TERMINATE RESP) đến Back End và thực hiện đóng kết nối. 
+
+Bản tin liên quan: 
+
+a. Bản tin TERMINATE sẽ gồm 3 thông tin cơ bản là: 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Session Id: phiên đăng nhập. 
+b. Bản tin TERMINATE RESP sẽ gồm thông tin cơ bản là: 
+
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+ii. Status: trạng thái  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  15 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+5. Kết nối sẽ bị đóng nếu có bất cứ có lỗi nào trên đường truyền, Front End sẽ cần tự động kết nối lại để 
+có thể thực hiện trừ phí. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  16 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+3.2 PHƢƠNG ÁN THU PHÍ SAU KHI ĐÓNG BARRIER 
+TRẠM HỞ 
+
+3.2.1 Sơ đồ diễn tiến 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  17 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+FE & BE Toll Collection Integration: Case 2 (Close Barrier and Charge)
+
+Front End Back End
+
+loop [Xe đến trạm (Trường hợp Kết nối đã thiết lập)]
+
+Xe 
+đến 
+
+Đọc Etag, Chụp biển số, check White List, Black List
+trạm
+
+opt [Xe có ETAG và không thuộc White List/Black List]
+5: checkin(requestid, sessionid, etag, toll,lane)
+
+6: checkin resp(requestid, status, ticket, ticket 
+type, price,vehicle type, plate) do reserve in account
+
+Kiểm 
+tra 
+ETC Kiểm tra MTC/ETC, chụp biển số, thông báo trên biển
+
+opt [ETC & Xe đi đến điểm mở barie & barie mở thành công/ hoặc xe đi qua trạm]
+
+7: commit(requestid, sessionid, ticket, status, 
+Xe plate, lane, image count)
+qua do charge the account
+
+8: commit resp(requestid, status)
+trạm
+
+opt [ETC & Xe không đi qua điểm mở barie.]
+
+Xe 
+9: rollback(requestid, sessionid, status, 
+
+không ticket, plate, image count)
+qua trạm do roll back account
+
+10: rollback resp(requestid, status)
+
+Ghi nhận log giao dịch vào fi le ETDR
+
+opt [Xe ko có ETAG/ Hoặc có ETAG nhưng không nhận diện được ETAG/ Hoặc Nhận diện được nhưng ko đủ tiền]
+
+Xử lý theo qui trình MTC tại trạm thu phí
+MTC
+
+opt [Xe đến trạm (Khi kết nối không được thiết lập, hoặc được thiết lập nhưng bản tin Reserve bị TIMEDOUT]
+
+VETC lựa chọn phương án MTC hoặc cho phép 
+ETC qua trạm rồi BE trừ sau theo ETDR
+
+ 
+
+3.2.2 Đặc tả chi tiết 
+1. Khi xe đến trạm, tại Front End, đầu đọc ETAG và camera đọc biển số được kích hoạt. Theo thống kê 
+
+thực tế, có thể giả định việc lấy ETAG sẽ được thực hiện nhanh hơn, và có xác xuất chính xác cao hơn 
+ 
+
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  18 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+(90%). Việc nhận dạng biển số có thể có độ chính xác thấp hơn (80%) và chậm hơn. Do đó, việc trừ 
+tiền trong giai đoạn 1 sẽ chỉ dựa trên ETAG. Hơn nữa, việc lấy biển số có thể được thiết kế chụp sau 
+khi xe đến gần Barrier trên từng làn. 
+
+2. Front End sẽ thực hiện kiểm tra thuê bao WHITE/BLACK list để kiểm tra việc mở barie dựa trên thông 
+tin ETAG (danh sách này sẽ được đồng bộ định kì từ Back End – từ trước đó). 
+
+3. Nếu xe thuộc nhóm white list có etag thì FE mở barrier cho xe qua và ghi nhận vào file ETDR giá 0 
+đồng, nếu xe thuộc nhóm white list không có etag thì kích hoạt MTC mở barrier vé 0 đồng và ghi 
+nhận vào file MTDR 
+
+4. Nếu xe không thuộc nhóm white list/blacklist (được phép thu phí khi qua), Front End sẽ gửi bản tin 
+kiểm tra trừ phí MTC/ETC (CHECKIN) đến Back End.  
+
+Bản tin liên quan: 
+
+a. CHECKIN: để kiểm tra xe có đủ điều kiện qua trạm theo ETC hay không. Các thông tin đầu 
+vào cơ bản gồm: 
+
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+ii. Session ID: phiên đăng nhập. 
+
+iii. Etag Id: thông tin ETAG mà Front End đọc được. 
+iv. Station Id: thông tin trạm thu phí. 
+v. Lane Id: (Optional) thông tin làn xe (Back End sẽ sử dụng cho mục đích hậu kiểm, có 
+
+thể chưa phải là đầu vào tính phí). 
+vi. Plate: (Optional) biển số của phương tiện, thông qua nhận dạng biển tự động qua 
+
+ảnh. 
+vii. TID: (Optional) Mã giao dịch của Etag khi qua đầu đọc thẻ. 
+
+viii. Hash Value (Optional) Giá trị bảo mật của thẻ Etag do đầu đọc đọc được khi có đủ 
+quyền truy xuất. 
+
+5. Back End khi nhận được bản tin CHECKIN từ Front End sẽ thực hiện kiểm tra thông tin tài khoản theo 
+các điều kiện:  
+
+ Thuê bao tháng/lượt 
+ Trạng thái đủ tiền của tài khoản đối với trường hợp lượt. Đủ tiền theo loại xe. 
+ Trạng thái hợp lệ của vé tháng (vé tháng còn hiệu lực). 
+
+Nếu việc kiểm tra là đủ điều kiện, Back End sẽ giữ lại ở tài khoản một khoản bằng số tiền vé lượt qua 
+trạm (với trường hợp là vé ngày), sau đó sẽ gửi trả Front End bản tin CHECKIN RESP với trạng thái là 
+ETC. Nếu không đủ điều kiện, Back End sẽ không giữ số tiền trong tài khoản, và trả về với trạng thái là 
+MTC. 
+
+Bản tin liên quan: 
+
+a. CHEKIN RESP: để trả lời Front End về điều kiện qua trạm, thông tin chính bao gồm: 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  19 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+ii. Ticket Id: ID của giao dịch xe qua trạm, duy nhất trên toàn hệ thống, do Back End 
+quản lý. 
+
+iii. Ticket Type: cho biết loại vé là vé tháng hay vé lượt. 
+iv. Status: trạng thái phản hồi, cho biết hình thức qua trạm sẽ là ETC/MTC. 
+v. Price: số tiền sẽ bị trừ/cần trừ (để hiển thị trên bảng điện tử) có thể là 0 khi vào làn 
+
+thu phí kín. 
+vi. Vehicle Type: loại phương tiện (để hiển thị trên bảng điện tử). 
+
+vii. Plate: biển số xe ứng với Etag khi đăng kí (để Front End có thể kiểm tra so sánh với 
+biển số thực tế xe khi qua trạm). 
+
+6. Trường hợp Front End không nhận được bản tin CHEKIN RESP trong thời gian timedout cho phép, 
+Front End sẽ tự động kích hoạt qui trình thu phí MTC hoặc ETC trừ tiền sau theo file ETDR, trường 
+hợp này sẽ do VETC lựa chọn và quyết định. 
+
+7. Trường hợp Front End khi nhận được bản tin CHECKIN RESP trong khoảng thời gian cho phép, Front 
+End sẽ kiểm tra/lấy thông tin trạng thái thu phí của xe là MTC hay ETC. Lúc này qui trình sẽ tách 
+thành 03 trường hợp. 
+
+a. Trường hợp 1: ETC và xe đi đến điểm kích hoạt mở thanh chắn barie/ hoặc xe đã đi qua 
+trạm. 
+
+b. Trường hợp 2: ETC và xe KHÔNG qua trạm (không đến điểm kích hoạt mở barie) 
+c. Trường hợp 3: Kích hoạt qui trình MTC. 
+
+Trường hợp 1: ETC và khi xe đi đến điểm kích hoạt mở thanh chắn barie (xe qua trạm): 
+
+8. Nếu trạng thái là ETC và xe tiếp tục tiến đến điểm kích hoạt mở thanh chắn barie, thì Front End sẽ 
+kích hoạt mở thanh chắn barie. 
+
+9. Khi thanh chắn barie được mở thành công và khi xe đi qua trạm, Front End lúc này chính thức gửi 
+bản tin COMMIT(trừ tiền) tới Back End (lúc này Front End đã có đủ thời gian cần thiết để nhận dạng 
+biển số xe). Front end sau khi chụp ảnh biển số, sẽ lấy được biển số từ Back End, so sánh và thực 
+hiện ghi gửi bản tin COMMIT(trừ tiền) về Back End. 
+Front End sẽ lưu ảnh chụp biển số theo định dạng Ticket Id_01 đến Ticket_0x. Trong đó x là số ảnh 
+chụp liên quan (Image Count) đến phương tiện để Back End có thể lấy về. 
+
+Bản tin liên quan: 
+
+a. COMMIT: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: id của giao dịch (kết quả của CHECKIN RESP). 
+iii. Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+iv. Plate: biển số thực tế camera nhận được. 
+v. Lane: làn chính thức xe đi qua (có thể có trường hợp xe đảo làn) 
+
+vi. Image Count: số lượng ảnh liên quan. 
+vii. Etag Id: thông tin ETAG mà Front End đọc được. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  20 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+10. Back End khi nhận được bản tin trừ tiền COMMIT, sẽ thực hiện chính thức trừ tiền rồi gửi trả bản tin 
+COMMIT RESP. 
+
+Bản tin liên quan: 
+
+a. COMMIT RESP: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Status: trạng thái phản hồi, cho biết đã trừ tiền thành công/thất bại. 
+11. Front End nhận được COMMIT RESP/ hoặc không nhận được do timedout, sẽ thực hiện ghi nhận giao 
+
+dịch trong file ETDR (chi tiết trong mô tả File ETDR ở mục dưới) 
+
+Trường hợp 2: ETC và khi xe KHÔNG qua trạm (không đến điểm kích hoạt mở Barrier) 
+
+12. Nếu trạng thái là ETC và xe không tiến đến điểm kích hoạt mở thanh chắn barie (tức không đi qua 
+trạm), thì Front End sẽ không kích hoạt mở barie, và lúc này chính thức gửi bản tin hủy giao dịch tới 
+Back End (lúc này Front End đã có đủ thời gian cần thiết để nhận dạng biển số xe). 
+
+Bản tin liên quan: 
+
+a. ROLLBACK: để Front End xác nhận với Back End chính thức hủy giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: id của giao dịch (kết quả của CHECKIN RESP). 
+iii. Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+iv. Plate: biển số thực tế nhận dạng được. 
+v. Etag Id: thông tin ETAG mà Front End đọc được. 
+
+13. Back End khi nhận được bản tin hủy giao dịchROLLBACK, sẽ thực hiện mở lại số tiền đã giữ cho tài 
+khoản và gửi về Front End bản tin ROLLBACK RESP. 
+
+Bản tin liên quan: 
+
+a. ROLLBACK RESP: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Status: trạng thái phản hồi, cho biết đã khôi phục khoản tiền đã giữ thành công/thất 
+bại. 
+
+14. Back End khi chờ một khoảng thời gian timedout mà không nhận được bản tin COMMIT hay 
+ROLLBACK sẽ thực hiện ROLLBACK lại giao dịch, mở tiền cho khách hàng. 
+
+15. Front End nhận được ROLLBACK RESP, sẽ thực hiện ghi nhận giao dịch trong file ETDR, gồm các 
+trường sau: 
+
+a. Station: mã trạm 
+b. Lane: mã làn  
+c. Ticket ID: giao dịch nhận được từ Back End. 
+d. Etag: mã etag của phương tiện 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  21 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+e. Plate: biển số xe nhận dạng được từ Camera 
+f. CHECKIN Datetime: ngày giờ xe vào trạm 
+g. Commit/Rollback Datetime: ngày giờ đóng giao dịch 
+h. Trạng thái: trạng thái giao dịch 
+
+i. 0: ETC trừ tiền thành công 
+ii. 1: ETC trừ tiền lỗi 
+
+iii. 3: ETC rollback thành công 
+iv. 4: ETC rollback lỗi 
+
+i. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, cách nhau 
+bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh theo 
+định dạng Ticketid_0x(x từ 1 đến n: n là số ảnh chụp được). 
+
+Trường hợp 3: Front End kích hoạt qui trình MTC 
+
+16. Front End sẽ kích hoạt qui trình MTC trong trường hợp khi Front End nhận được bản tin CHECKIN và 
+trạng thái thu phí là MTC. 
+
+17. Front End trường hợp thu phí MTC sẽ kết xuất file MTC TDR: chi tiết xem mô tả file MTDR. 
+
+Trường hợp khi lỗi kết nối đến BE, hoặc FE không nhận được phản hồi từ BE (timedout) 
+
+18. Trường hợp này sẽ do VETC lựa chọn là thu phí MTC tại trạm, hay ETC – tức vẫn cho xe đi, sau đó sẽ 
+trừ vào tài khoản sau. 
+
+19. Mất kết nối được chia làm 2 loại: 
+- Mất kết nối tới server trung tâm 
+
+o Hệ thống FE sẽ truy xuất tới dữ liệu đồng bộ định kỳ(gồm các thông tin Etag, Biển số, 
+Loại xe, Trạng thái) để ra quyết định cho xe qua hay không 
+
+o Việc này trong toàn bộ thời gian khắc phục cho đến khi hệ thống được khôi phục 
+
+hoặc có quyết định chuyển sang thu phí MTC. 
+o FE sẽ kết xuất các giao dịch trong tình huống xử lý offline ra file OFFLC dạng CSV để 
+
+BE thực hiện việc trừ tiền lại. format tại mục 4.2  
+- Timeout có phản hồi nhưng sau thời gian quy định, hoặc kết quả là timeout. 
+
+o Lệnh CHECKIN bị timeout chuyển xe sang hệ thống thu phí MTC, coi như  CHECKIN không 
+thành công 
+
+o Lệnh COMMIT bị timeout cho xe qua và commit lại sau. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  22 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+3.3 PHƢƠNG ÁN THU PHÍ SAU KHI ĐÓNG BARRIER 
+TRẠM KÍN 
+
+Về cơ bản việc qua trạm kín được thiết kế cho FE như qua trạm hở, khi xe đến trạm vào hay đến trạm ra cũng 
+thực hiện hàm CHECKIN rồi sau đó thực hiện hàm COMMIT hoặc ROLLBACK. Các công việc quản lý và xử lý sự 
+khác biệt về trạm được BE thực hiện. Bản tin cho FE là sử dụng chung. 
+
+ 
+
+3.3.1 Sơ đồ diễn tiến 
+3.3.1.1 xe đi qua trạm vào 
+Giống như xe đi qua trạm hở. Mục 3.2.1. 
+
+Front End không thay đổi, chỉ khác ở việc khai báo loại trạm, loại làn ở Back End. 
+
+3.3.1.2 xe đi qua trạm ra 
+Giống như xe đi qua trạm hở. Mục 3.2.1. 
+
+Front End không thay đổi, chỉ khác ở việc khai báo loại trạm, loại làn ở Back End. 
+
+3.3.2 Đặc tả chi tiết 
+3.3.2.1 xe đi qua trạm vào 
+
+1. Khi xe đến trạm vào (thu phí kín), tại Front End, đầu đọc ETAG và camera đọc biển số được kích hoạt.  
+2. Front End sẽ thực hiện kiểm tra thuê bao WHITE/BLACK list để kiểm tra việc mở barie dựa trên thông 
+
+tin ETAG (danh sách này sẽ được đồng bộ định kì từ Back End – từ trước đó). 
+3. Nếu xe thuộc danh sách white list có etag thì mở barrier và ghi vào ETDR giá bằng 0 đồng. thuộc 
+
+danh sách ưu tiên biển số mở barrier và ghi nhận MTDR giá 0 đồng. cấu trúc file ở mục 4.2.3 
+4. Nếu xe không thuộc nhóm white list/blacklist, Front End sẽ gửi bản tin check_in đến  BE, mục đích 
+
+ghi nhận có xe đến trong làn nhận dạng. 
+
+Bản tin liên quan: 
+
+a. CHECKIN: để kiểm tra xe có đủ điều kiện qua trạm theo ETC hay không. Các thông tin đầu 
+vào cơ bản gồm: 
+
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+ii. Session ID: phiên đăng nhập. 
+
+iii. Etag Id: thông tin ETAG mà Front End đọc được. 
+iv. Station Id: thông tin trạm thu phí. 
+v. Lane Id: (Optional) thông tin làn xe (Back End sẽ sử dụng cho mục đích hậu kiểm, có 
+
+thể chưa phải là đầu vào tính phí). 
+vi. Plate: (Optional) biển số của phương tiện, thông qua nhận dạng biển tự động qua 
+
+ảnh. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  23 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+vii. TID: (Optional) Mã giao dịch của Etag khi qua đầu đọc thẻ. 
+viii. Hash Value (Optional) Giá trị bảo mật của thẻ Etag do đầu đọc đọc được khi có đủ 
+
+quyền truy xuất. 
+20. Back End khi nhận được bản tin CHECKIN từ Front End sẽ thực hiện kiểm tra thông tin tài khoản theo 
+
+các điều kiện:  
+ Thuê bao tháng/lượt 
+ Trạng thái đủ tiền của tài khoản đối với trường hợp lượt. Đủ tiền theo loại xe. 
+ Trạng thái hợp lệ của vé tháng (vé tháng còn hiệu lực). 
+
+Nếu việc kiểm tra là đủ điều kiện, Back End sẽ giữ lại ở tài khoản một khoản bằng số tiền vé lượt qua 
+trạm (với trường hợp là vé ngày), sau đó sẽ gửi trả Front End bản tin CHECKIN RESP với trạng thái là 
+ETC. Nếu không đủ điều kiện, Back End sẽ không giữ số tiền trong tài khoản, và trả về với trạng thái là 
+MTC. 
+
+Bản tin liên quan: 
+
+a. CHEKIN RESP: để trả lời Front End về điều kiện qua trạm, thông tin chính bao gồm: 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: ID của giao dịch xe qua trạm, duy nhất trên toàn hệ thống, do Back End 
+quản lý. 
+
+iii. Ticket Type: cho biết loại vé là vé tháng hay vé lượt. 
+iv. Status: trạng thái phản hồi, cho biết hình thức qua trạm sẽ là ETC/MTC. 
+v. Price: số tiền sẽ bị trừ/cần trừ (để hiển thị trên bảng điện tử) có thể là 0 khi vào làn 
+
+thu phí kín. 
+vi. Vehicle Type: loại phương tiện (để hiển thị trên bảng điện tử). 
+
+vii. Plate: biển số xe ứng với Etag khi đăng kí (để Front End có thể kiểm tra so sánh với 
+biển số thực tế xe khi qua trạm). 
+
+5. Trường hợp Front End không nhận được bản tin CHECK IN RESP trong thời gian timedout cho phép, 
+Front End sẽ tự động kích hoạt qui trình thu phí MTC/ hoặc ETC trừ tiền sau theo file ETDR, trường 
+hợp này sẽ do VETC lựa chọn và quyết định. 
+
+6. Trường hợp Front End khi nhận được bản tin CHECK IN RESP trong khoảng thời gian cho phép, Front 
+End sẽ kiểm tra/lấy thông tin trạng thái của xe là MTC hay ETC. Lúc này qui trình sẽ tách thành 03 
+trường hợp. 
+
+a. Trường hợp 1: ETC và xe đi đến điểm kích hoạt mở thanh chắn barie/ hoặc xe đã đi qua 
+trạm. 
+
+b. Trường hợp 2: ETC và xe KHÔNG qua trạm vào (không đến điểm kích hoạt mở barie) 
+c. Trường hợp 3: Kích hoạt qui trình MTC. 
+
+Trường hợp 1: ETC và khi xe đi đến điểm kích hoạt mở thanh chắn barie (xe qua trạm): 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  24 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+7. Nếu trạng thái là ETC và xe tiếp tục tiến đến điểm kích hoạt mở thanh chắn barie, thì Front End sẽ 
+kích hoạt mở thanh chắn barie. 
+
+8. Khi thanh chắn barie được mở thành công hoặc khi xe đi qua trạm vào, Front End lúc này chính thức 
+gửi bản tin check in commit tới Back End (lúc này Front End đã có đủ thời gian cần thiết để nhận 
+dạng biển số xe). Front end sau khi chụp ảnh biển số, sẽ lấy được biển số từ Back End, so sánh và 
+thực hiện ghi gửi bản tin trừ tiền về Back End. 
+Front End sẽ lưu ảnh chụp biển số theo định dạng Ticket Id_01 đến Ticket_0x. Trong đó x là số ảnh 
+chụp liên quan (Image Count) đến phương tiện để Back End có thể lấy về. 
+
+Bản tin liên quan: 
+
+a. COMMIT: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: id của giao dịch (kết quả của Check IN RESP). 
+iii. Etag Id: thông tin ETAG mà Front End đọc được. 
+iv. Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+v. Plate: biển số thực tế camera nhận được. 
+
+vi. Lane: làn chính thức xe đi qua (có thể có trường hợp xe đảo làn) 
+vii. Image Count: số lượng ảnh liên quan. 
+
+viii. Vehicle Length: chiều dài của phương tiện mà FE nhận diện được 
+9. Back End khi nhận được bản tin trừ tiền COMMIT, sẽ thực hiện chính thức trừ tiền rồi gửi trả bản tin 
+
+COMMIT RESP. 
+
+Bản tin liên quan: 
+
+a. COMMIT RESP: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Status: trạng thái phản hồi, cho biết đã trừ tiền thành công/thất bại. 
+10. Front End nhận được COMMIT RESP/ hoặc không nhận được do timedout, sẽ thực hiện ghi nhận giao 
+
+dịch trong file ETDR (chi tiết trong mô tả File ETDR ở mục dưới) 
+
+Trường hợp 2: ETC và khi xe KHÔNG qua trạm (không đến điểm kích hoạt mở Barrier) 
+
+11. Nếu trạng thái là ETC và xe không tiến đến điểm kích hoạt mở thanh chắn barie (tức không đi qua 
+trạm), thì Front End sẽ không kích hoạt mở barie, và lúc này chính thức gửi bản tin hủy giao dịch tới 
+Back End (lúc này Front End đã có đủ thời gian cần thiết để nhận dạng biển số xe). 
+
+Bản tin liên quan: 
+
+a. ROLLBACK: để Front End xác nhận với Back End chính thức hủy giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: id của giao dịch (kết quả của Check In RESP). 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  25 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+iii. Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+iv. Plate: biển số thực tế nhận dạng được. 
+v. Etag Id: thông tin ETAG mà Front End đọc được. 
+
+12. Back End khi nhận được bản tin hủy giao dịch ROLLBACK, sẽ thực hiện mở lại số tiền đã giữ cho tài 
+khoản và gửi về Front End bản tin ROLLBACK RESP. 
+
+Bản tin liên quan: 
+
+a. ROLLBACK RESP: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Status: trạng thái phản hồi, cho biết đã khôi phục khoản tiền đã giữ thành công/thất 
+bại. 
+
+13. Back End khi chờ một khoảng thời gian timedout mà không nhận được bản tin COMMIT hay 
+ROLLBACK sẽ thực hiện ROLLBACK lại giao dịch, mở tiền cho khách hàng. 
+
+14. Front End nhận được ROLLBACK RESP, sẽ thực hiện ghi nhận giao dịch trong file ETDR, gồm các 
+trường sau: 
+
+a. Station: mã trạm 
+b. Lane: mã làn  
+c. Ticket ID: giao dịch nhận được từ Back End. 
+d. Etag: mã etag của phương tiện 
+e. Plate: biển số xe nhận dạng được từ Camera 
+f. Checkin Datetime: ngày giờ xe vào trạm 
+g. Commit/Rollback Datetime: ngày giờ đóng giao dịch 
+h. Trạng thái: trạng thái giao dịch 
+
+i. 0: ETC trừ tiền thành công 
+ii. 1: ETC trừ tiền lỗi 
+
+iii. 3: ETC rollback thành công 
+iv. 4: ETC rollback lỗi 
+
+i. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, cách nhau 
+bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh theo 
+định dạng Ticketid_0x(x từ 1 đến n: n là số ảnh chụp được). 
+
+Trường hợp 3: Front End kích hoạt qui trình MTC 
+
+15. Front End sẽ kích hoạt qui trình MTC trong trường hợp khi Front End nhận được bản tin CHECKIN và 
+trạng thái thu phí là MTC. 
+
+16. Front End trường hợp thu phí MTC sẽ kết xuất file MTC TDR: chi tiết xem mô tả file MTDR. 
+
+Trường hợp khi lỗi kết nối đến BE, hoặc FE không nhận được phản hồi từ BE (timedout) 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  26 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+17. Trường hợp này sẽ do VETC lựa chọn là thu phí MTC tại trạm, hay ETC – tức vẫn cho xe đi, sau đó sẽ 
+trừ vào tài khoản sau. 
+
+18. Mất kết nối được chia làm 2 loại: 
+- Mất kết nối tới server trung tâm 
+
+o Hệ thống FE sẽ truy xuất tới dữ liệu đồng bộ định kỳ(gồm các thông tin Etag, Biển số, 
+Loại xe, Trạng thái) để ra quyết định cho xe qua hay không 
+
+o Việc này trong toàn bộ thời gian khắc phục cho đến khi hệ thống được khôi phục 
+
+hoặc có quyết định chuyển sang thu phí MTC. 
+o FE sẽ kết xuất các giao dịch trong tình huống xử lý offline ra file OFFLC dạng CSV để 
+
+BE thực hiện việc trừ tiền lại. format tại mục 4.2  
+- Timeout có phản hồi nhưng sau thời gian quy định, hoặc kết quả là timeout. 
+
+o Lệnh CHECKIN bị timeout chuyển xe sang hệ thống thu phí MTC, coi như  CHECKIN không 
+thành công 
+
+o Lệnh COMMIT bị timeout cho xe qua và commit lại sau. 
+
+ 
+
+3.3.2.2 xe đi qua trạm ra 
+19. Khi xe đến trạm ra (thu phí kín), tại Front End, đầu đọc ETAG và camera đọc biển số được kích hoạt.  
+20. Front End sẽ thực hiện kiểm tra thuê bao WHITE/BLACK list để kiểm tra việc mở barie dựa trên thông 
+
+tin ETAG (danh sách này sẽ được đồng bộ định kì từ Back End – từ trước đó). 
+21. Nếu xe thuộc danh sách white list có etag thì mở barrier và ghi vào ETDR giá bằng 0 đồng. thuộc 
+
+danh sách ưu tiên biển số mở barrier và ghi nhận MTDR giá 0 đồng. cấu trúc file ở mục 4.2.3 
+22. Nếu xe không thuộc nhóm white list/blacklist, Front End sẽ gửi bản tin check_in đến  BE, mục đích 
+
+ghi nhận có xe đến trong làn nhận dạng. 
+
+Bản tin liên quan: 
+
+b. CHECKIN: để kiểm tra xe có đủ điều kiện qua trạm theo ETC hay không. Các thông tin đầu 
+vào cơ bản gồm: 
+
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+ii. Session ID: phiên đăng nhập. 
+
+iii. Etag Id: thông tin ETAG mà Front End đọc được. 
+iv. Station Id: thông tin trạm thu phí. 
+v. Lane Id: (Optional) thông tin làn xe (Back End sẽ sử dụng cho mục đích hậu kiểm, có 
+
+thể chưa phải là đầu vào tính phí). 
+21. Back End khi nhận được bản tin CHECKIN từ Front End sẽ thực hiện kiểm tra thông tin tài khoản theo 
+
+các điều kiện:  
+ Thuê bao tháng/lượt 
+ Trạng thái đủ tiền của tài khoản đối với trường hợp lượt. Đủ tiền theo loại xe. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  27 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+ Trạng thái hợp lệ của vé tháng (vé tháng còn hiệu lực). 
+
+Nếu việc kiểm tra là đủ điều kiện, Back End sẽ giữ lại ở tài khoản một khoản bằng số tiền vé lượt qua 
+trạm (với trường hợp là vé ngày), sau đó sẽ gửi trả Front End bản tin CHECKIN RESP với trạng thái là 
+ETC. Nếu không đủ điều kiện, Back End sẽ không giữ số tiền trong tài khoản, và trả về với trạng thái là 
+MTC. 
+
+Bản tin liên quan: 
+
+a. CHEKIN RESP: để trả lời Front End về điều kiện qua trạm, thông tin chính bao gồm: 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: ID của giao dịch xe qua trạm, duy nhất trên toàn hệ thống, do Back End 
+quản lý. 
+
+iii. Ticket Type: cho biết loại vé là vé tháng hay vé lượt. 
+iv. Status: trạng thái phản hồi, cho biết hình thức qua trạm sẽ là ETC/MTC. 
+v. Price: số tiền sẽ bị trừ/cần trừ (để hiển thị trên bảng điện tử) có thể là 0 khi vào làn 
+
+thu phí kín. 
+vi. Vehicle Type: loại phương tiện (để hiển thị trên bảng điện tử). 
+
+vii. Plate: biển số xe ứng với Etag khi đăng kí (để Front End có thể kiểm tra so sánh với 
+biển số thực tế xe khi qua trạm). 
+
+23. Trường hợp Front End không nhận được bản tin CHECK IN RESP trong thời gian timedout cho phép, 
+Front End sẽ tự động kích hoạt qui trình thu phí MTC/ hoặc ETC trừ tiền sau theo file ETDR, trường 
+hợp này sẽ do VETC lựa chọn và quyết định. 
+
+24. Trường hợp Front End khi nhận được bản tin CHECK IN RESP trong khoảng thời gian cho phép, Front 
+End sẽ kiểm tra/lấy thông tin trạng thái của xe là MTC hay ETC. Lúc này qui trình sẽ tách thành 03 
+trường hợp. 
+
+a. Trường hợp 1: ETC và xe đi đến điểm kích hoạt mở thanh chắn barie/ hoặc xe đã đi qua 
+trạm. 
+
+b. Trường hợp 2: ETC và xe KHÔNG qua trạm vào (không đến điểm kích hoạt mở barie) 
+c. Trường hợp 3: Kích hoạt qui trình MTC. 
+
+Trường hợp 1: ETC và khi xe đi đến điểm kích hoạt mở thanh chắn barie (xe qua trạm): 
+
+25. Nếu trạng thái là ETC và xe tiếp tục tiến đến điểm kích hoạt mở thanh chắn barie, thì Front End sẽ 
+kích hoạt mở thanh chắn barie. 
+
+26. Khi thanh chắn barie được mở thành công hoặc khi xe đi qua trạm vào, Front End lúc này chính thức 
+gửi bản tin check in commit tới Back End (lúc này Front End đã có đủ thời gian cần thiết để nhận 
+dạng biển số xe). Front end sau khi chụp ảnh biển số, sẽ lấy được biển số từ Back End, so sánh và 
+thực hiện ghi gửi bản tin trừ tiền về Back End. 
+Front End sẽ lưu ảnh chụp biển số theo định dạng Ticket Id_01 đến Ticket_0x. Trong đó x là số ảnh 
+chụp liên quan (Image Count) đến phương tiện để Back End có thể lấy về. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  28 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Bản tin liên quan: 
+
+a. COMMIT: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: id của giao dịch (kết quả của Check IN RESP). 
+iii. Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+iv. Etag Id: thông tin ETAG mà Front End đọc được. 
+v. Plate: biển số thực tế camera nhận được. 
+
+vi. Lane: làn chính thức xe đi qua (có thể có trường hợp xe đảo làn) 
+vii. Image Count: số lượng ảnh liên quan. 
+
+viii. Vehicle Length: chiều dài của phương tiện mà FE nhận diện được 
+27. Back End khi nhận được bản tin trừ tiền COMMIT, sẽ thực hiện chính thức trừ tiền rồi gửi trả bản tin 
+
+COMMIT RESP. 
+
+Bản tin liên quan: 
+
+a. COMMIT RESP: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Status: trạng thái phản hồi, cho biết đã trừ tiền thành công/thất bại. 
+28. Front End nhận được COMMIT RESP/ hoặc không nhận được do timedout, sẽ thực hiện ghi nhận giao 
+
+dịch trong file ETDR (chi tiết trong mô tả File ETDR ở mục dưới) 
+
+Trường hợp 2: ETC và khi xe KHÔNG qua trạm (không đến điểm kích hoạt mở Barrier) 
+
+29. Nếu trạng thái là ETC và xe không tiến đến điểm kích hoạt mở thanh chắn barie (tức không đi qua 
+trạm), thì Front End sẽ không kích hoạt mở barie, và lúc này chính thức gửi bản tin hủy giao dịch tới 
+Back End (lúc này Front End đã có đủ thời gian cần thiết để nhận dạng biển số xe). 
+
+Bản tin liên quan: 
+
+a. ROLLBACK: để Front End xác nhận với Back End chính thức hủy giao dịch. 
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+
+ii. Ticket Id: id của giao dịch (kết quả của Check In RESP). 
+iii. Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+iv. Plate: biển số thực tế nhận dạng được. 
+v. Etag Id: thông tin ETAG mà Front End đọc được. 
+
+30. Back End khi nhận được bản tin hủy giao dịch ROLLBACK, sẽ thực hiện mở lại số tiền đã giữ cho tài 
+khoản và gửi về Front End bản tin ROLLBACK RESP. 
+
+Bản tin liên quan: 
+
+a. ROLLBACK RESP: để Front End xác nhận với Back End chính thức trừ tiền giao dịch. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  29 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+i. Request id: id của bản tin do Front End định nghĩa. Quản lý theo sequence. 
+ii. Status: trạng thái phản hồi, cho biết đã khôi phục khoản tiền đã giữ thành công/thất 
+
+bại. 
+31. Back End khi chờ một khoảng thời gian timedout mà không nhận được bản tin COMMIT hay 
+
+ROLLBACK sẽ thực hiện ROLLBACK lại giao dịch, mở tiền cho khách hàng. 
+32. Front End nhận được ROLLBACK RESP, sẽ thực hiện ghi nhận giao dịch trong file ETDR, gồm các 
+
+trường sau: 
+a. Station: mã trạm 
+b. Lane: mã làn  
+c. Ticket ID: giao dịch nhận được từ Back End. 
+d. Etag: mã etag của phương tiện 
+e. Plate: biển số xe nhận dạng được từ Camera 
+f. Checkin Datetime: ngày giờ xe vào trạm 
+g. Commit/Rollback Datetime: ngày giờ đóng giao dịch 
+h. Trạng thái: trạng thái giao dịch 
+
+i. 0: ETC trừ tiền thành công 
+ii. 1: ETC trừ tiền lỗi 
+
+iii. 3: ETC rollback thành công 
+iv. 4: ETC rollback lỗi 
+
+i. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, cách nhau 
+bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh theo 
+định dạng Ticketid_0x(x từ 1 đến n: n là số ảnh chụp được). 
+
+Trường hợp 3: Front End kích hoạt qui trình MTC 
+
+33. Front End sẽ kích hoạt qui trình MTC trong trường hợp khi Front End nhận được bản tin CHECKIN và 
+trạng thái thu phí là MTC. 
+
+34. Front End trường hợp thu phí MTC sẽ kết xuất file MTC TDR: chi tiết xem mô tả file MTDR. 
+
+Trường hợp khi lỗi kết nối đến BE, hoặc FE không nhận được phản hồi từ BE (timedout) 
+
+35. Trường hợp này sẽ do VETC lựa chọn là thu phí MTC tại trạm, hay ETC – tức vẫn cho xe đi, sau đó sẽ 
+trừ vào tài khoản sau. 
+
+36. Mất kết nối được chia làm 2 loại: 
+- Mất kết nối tới server trung tâm 
+
+o Hệ thống FE sẽ truy xuất tới dữ liệu đồng bộ định kz(gồm các thông tin Etag, Biển số, Loại xe, 
+Trạng thái) để ra quyết định cho xe qua hay không 
+
+o Việc này trong toàn bộ thời gian khắc phục cho đến khi hệ thống được khôi phục hoặc có 
+quyết định chuyển sang thu phí MTC. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  30 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+o FE sẽ kết xuất các giao dịch trong tình huống xử lý offline ra file OFFLC dạng CSV để BE thực 
+hiện việc trừ tiền lại. format tại mục 4.2  
+
+- Timeout có phản hồi nhưng sau thời gian quy định, hoặc kết quả là timeout. 
+o Lệnh CHECKIN bị timeout chuyển xe sang hệ thống thu phí MTC, coi như  CHECKIN không 
+
+thành công 
+o Lệnh COMMIT bị timeout cho xe qua và commit lại sau. 
+
+  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  31 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+4 ĐẶC TẢ GIAO THỨC TÍCH HỢP 
+
+4.1 Quản lý phiên bản giao thức tích hợp 
+Quản lý phiên bản giao thức tích hợp để đảm bảo cho khi thay đổi API không ảnh hưởng đến các trạm đang 
+chạy. Đặc tả kết nối quản lý 2 dòng phiên bản cho hai giao thức độc lập nhau: 
+
+- Phiên bản cho giao thức yêu cầu và phản hồi (online) 
+- Phiên bản cho giao thức truyền nhận file (filesync) 
+
+Các trường dữ liệu không thông tin phiên bản là các trường ở phiên bản 1.0. Các trường mới, lệnh mới được 
+bổ xung cho phiên bản mới trong tài liệu sẽ sử dụng kí hiệu đánh dấu phiên bản: @since v{major}.{minor}-
+{protocol-type} 
+
+Trong đó: 
+
+- Major: phiên bản có thay đổi lớn 
+- Minor: phiên bản có thay đổi nhỏ 
+- Protocol-type: loại giao thức gồm 2 loại online (gọi lệnh request / response) và filesync (đồng bộ file) 
+
+Mỗi trạm có thể có các phiên bản khác nhau, việc thiết lập cho từng trạm sẽ được làm trên backend. Trạm có 
+thể nâng cấp lên phiên bản mới nếu có yêu cầu. Các trạm mời thường sẽ được thiết lập phiên bản mới nhất. 
+
+4.1.1 Phiên bản cho giao thức yêu cầu và phản hồi 
+Phiên bản Phụ thuộc Mô tả 
+
+v1.0-online - Phát hành lần đầu, ngày 29/7/2015 
+v1.1-online 
+
+Yêu cầu tối Phát hành ngày 14/06/2018 
+thiểu: v1.1-
+
+Lệnh CHECKIN RESP bổ sung trường: Price Ticket Type 
+filesync 
+
+- Lệnh COMMIT bổ sung trường: Weight, Reason ID  
+
+- Lệnh ROLLBACK bổ sung trường: Weight, Reason ID 
+
+- Bổ xung hàm PASS_AND_HOLD và PASS_AND_HOLD_RESP 
+   
+ 
+
+4.1.2 Phiên bản cho giao thức truyền nhận file 
+Phiên bản Phụ thuộc Mô tả 
+
+v1.0-filesync - Phát hành lần đầu, ngày 29/7/2015 
+v1.1-filesync - Phát hành 14/06/2018 
+
+Bổ sung trường TRANS_TYPE với giao dịch ETDR 
+v1.2-filesync - Phát hành ngày 15/11/2018 
+
+- Cập nhật WL, BL, CSL 
+- Bổ xung danh sách Price List. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  32 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+4.2 GIAO THỨC YÊU CẦU VÀ PHẢN HỒI 
+4.2.1 Giao thức kết nối 
+Phương thức kết nối giữa Front End và Back End thông qua giao thức Socket TCP/IP. Để gửi được bản tin, kết 
+nối đến Back End cần được thiết lập. Để thiết lập được kết nối, phía Front End cần được được xác thực quyền 
+truy nhập thành công (từ/bởi Back End).  
+
+Kết nối giữa Back End và Front End được thực hiện theo cơ chế State Full, tức thiết lập kết nối được thực 
+hiện một lần, và sử dụng chung cho tất cả các lần gửi bản tin. 
+
+Bản tin truyền nhận giữa Front End và Back End được lưu dưới dạng Binary có cấu trúc, được định nghĩa chi 
+tiết trong mục “Danh sách lệnh và đặc tả dữ liệu” của tài liệu này. 
+
+4.2.2 Cấu trúc bản tin 
+Bản tin giao dịch giữa Front End và Back End theo sẽ được mã hóa dưới định dạng Binarry theo giao thức 
+TCOC (Toll Collection Online Charging). Cấu trúc bản tin sẽ bao gồm khai nhóm là Header và Body.  
+
+Header là có cấu trúc giống nhau giữa tất cả các bản tin. Body chứa thông tin của bản tin sẽ thay đổi tùy theo 
+nghiệp vụ của bản tin đó.  
+
+Toàn bộ các trường dữ liệu trong TTOC đều được lưu và giải mã theo cùng phương thức Little Indian. 
+
+Header
+Body
+
+Bản tin TCOC 
+Message 
+
+nguyên gốc Command ID Request ID Session ID Message Body
+Length
+
+chưa mã hóa
+
+Bản tin TCOC 
+đã mã hóa trên 
+đường truyền Message 
+
+Encripted Message Body
+Length
+
+Các bản tin 
+TCOC đã 
+mã hóa 
+
+truyền qua Message 1 Message 2 Message ..n
+mạng
+
+ 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  33 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+4.2.2.1 Cấu trúc bản tin nguyên gốc 
+Bản tin giao dịch giữa Front End và Back End theo sẽ được mã hóa dưới định dạng Binary theo giao thức 
+TCOC (Toll Collection Online Charging). Cấu trúc bản tin sẽ bao gồm khai nhóm là Header và Body. Header là 
+giống nhau giữ tất cả các bản tin cần thiết. Body sẽ gồm các thông tin liên quan đến giao dịch/yêu cầu. Toàn 
+bộ các trường đều được lưu trữ theo cách là Little Indian. 
+
+4.2.2.1.1 Header 
+Định nghĩa cách lấy thông tin bản tin. Header gồm 4 trường, gồm 13 bytes. 
+
+- Message Length: gồm 4 bytes, lưu kích thước của toàn bộ bản tin. 
+- Command Id: gồm 4 bytes, được định nghĩa fix theo từng loại bản tin mô tả bên dưới. Được định 
+
+nghĩa sẵn, và Client sẽ cần phải truyền đúng để thực hiện đúng yêu cầu. 
+- Request Id: gồm 4 bytes, là một số duy nhất do Client tạo ra. Có thể tạo ra theo sequense. Bản tin 
+
+phản hồi sẽ giữ nguyên bản tin này trong nội dung bản tin trả về. Thông tin này có mục đích để cho 
+client liên kết được request và response cho đúng. 
+
+- Session Id: gồm 4 bytes, là sesion của phiên giao dịch. Trường hợp bản tin connect có thể đặt session 
+id bằng null (hoặc bằng 0), các trường hợp khác thông tin session phải đúng và hợp lệ với session đã 
+đăng kí. Nếu không yêu cầu sẽ bị từ chối thực hiện. 
+
+Danh sách bản tin: 
+
+STT MESSAGE COMMAND ID LENGTH( Chưa mã hóa) Hỗ trợ từ phiên bản 
+1 CONNECT 0x00 44 v1.0-online 
+2 CONNECT RESP 0x01 20 v1.0-online 
+3 SHAKE 0x02 16 v1.0-online 
+4 SHAKE RESP 0x03 20 v1.0-online 
+5 CHECKIN 0x04 98 v1.0-online 
+6 CHECKIN RESP 0x05 82 v1.0-online 
+7 COMMIT 0x06 78 v1.0-online 
+8 COMMIT RESP 0x07 20 v1.0-online 
+9 ROLLBACK  0x08 70 v1.0-online 
+10 ROLLBACK RESP 0x09 20 v1.0-online 
+11 TERMINATE 0x0A 16 v1.0-online 
+12 TERMINATE RESP 0x0B 20 v1.0-online 
+13 CHARGE 0x0C 48 v1.0-online 
+14 CHARGE_RESP 0x0D 74 v1.0-online 
+15 PASS_AND_HOLD 0x0E 86 v1.1-online 
+16 PASS_AND_HOD_RESP 0x0F 20 v1.1-online 
+ 
+
+4.2.2.1.2 Body 
+Là các trường nội dung thông tin ứng với từng loại bản tin giao dịch. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  34 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+Trường hợp nội dung phản hồi có Status thì thường theo một cấu trúc: nếu Status = 0 là thành công. Nếu >0 
+là có lỗi/điều không mong muốn, và giá trí của Status ứng với mã lỗi. 
+
+4.2.2.2 Cấu trúc bản tin sau khi đã mã hóa bảo mật 
+Cấu trúc bản tin mã hóa sẽ bao gồm 2 trường: 
+
+- Message Length: gồm 4 bytes, lưu độ dài của bản tin đã mã hóa 
+- Message Body: được lưu trữ dưới dạng nhị phân, lưu nội dung bản tin đã mã hóa. Nội dung giải mã 
+
+của bản tin này sẽ là toàn bộ bản tin nguyên gốc chưa mã hóa, được mô tả ở mục “Cấu trúc bản tin 
+nguyên gốc” ở trên. 
+
+4.2.3 Danh sách lệnh và đặc tả dữ liệu 
+4.2.3.1 CONNECT 
+Là bản tin thực hiện thiết lập kết nối từ Front End đến Back End. 
+
+REQUEST HEADER: 
+
+- Message Length = 44 
+- Command Id: 0x00 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: 0x00 
+
+REQUEST BODY: 
+
+- Username: tên đăng nhập 
+- Password: mật khẩu 
+- Station: mã trạm (được cung cấp) 
+- Timed Out: Thời gian timedout cho phép Back End trả thông tin về cho Front End (tính theo đơn vị 
+
+miliseconds) 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 44 bytes. 
+Command Id 4 Int M 0x00 
+Request Id 4 Int M Id duy nhất do Client sinh ra, Back End 
+
+sẽ trả về bản tin nội dung Request Id 
+do Client gửi đến 
+
+Session Id 4 Int O 0x00, Back End sẽ không sử dụng thông 
+tin này ở bản tin này 
+
+Username 10 String M Tên đăng nhập 
+Password 10 String M Mật khẩu 
+Station 4 Int M Mã trạm thu phí 
+Timeout 4 Int M Thời gian timedout cho phép backend 
+
+trả thông tin về 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  35 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+     
+
+4.2.3.2 CONNECT RESP 
+Là bản tin BACK END trả về khi có yêu cầu kết nối từ Front End 
+
+REQUEST HEADER: 
+
+- Message Length = 20 
+- Command Id: 0x01 
+- Request Id: giá trị Front End truyền đến 
+- Session Id: Back End tạo ra duy nhất 
+
+REQUEST BODY: 
+
+- Status: trạng thái đăng nhập. 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 20 bytes. 
+Command Id 4 Int M 0x01 
+Request Id 4 Int M Thông tin Front End gửi đến 
+Session Id 4 Int M Backend sẽ gửi thông tin session id sau 
+
+khi đăng nhập, được sinh duy nhất trong 
+hệ thống 
+
+Status 4 Int M Trạng thái đăng nhập 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Description 
+0 Thành công 
+1 Username hoặc mật khẩu không đúng 
+2 Vượt quá số lượng kết nối đồng thời cho phép 
+3 Vượt quá số lượng kết nối đồng thời trong khoảng 
+
+thời gian cho phép. 
+4 Station ID truyền vào không đúng 
+5 Số lượng kết nối lỗi vượt quá giới hạn cho phép 
+
+4.2.3.3 SHAKE 
+Là bản tin Front End gửi BACK END khi có yêu cầu giữ kết kết nối đã đăng nhập 
+
+REQUEST HEADER: 
+
+- Message Length = 16 
+- Command Id: 0x02 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  36 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+REQUEST BODY: 
+
+- Không có 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 16 bytes. 
+Command Id 4 Int M 0x02 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back 
+
+End trả về 
+  
+
+4.2.3.4 SHAKE RESP 
+Là bản tin BACK END trả về khi có yêu cầu duy trì kết nối từ Front End 
+
+REQUEST HEADER: 
+
+- Message Length = 20 
+- Command Id: 0x03 
+- Request Id: giá trị Front End truyền đến 
+- Session Id: Back End tạo ra duy nhất 
+
+REQUEST BODY: 
+
+- Status: trạng thái bắt tay 
+
+Field Bytes Data Mandatory Description 
+Type 
+
+Message 4 Int  M Kích thước bản tin này:  
+Length Fix = 20 bytes. 
+Command Id 4 Int M 0x03 
+Request Id 4 Int M Thông tin Front End gửi đến 
+Session Id 4 Int M Backend sẽ gửi thông tin session id sau khi 
+
+đăng nhập, được sinh duy nhất trong hệ 
+thống 
+
+Status 4 Int M Trạng thái bắt tay 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Description 
+0 Thành công 
+1 Phiên giao dịch đã hết hạn. Đóng kết nối. 
+
+4.2.3.5 TERMINATE 
+Là bản tin BACK END trả về khi có yêu cầu hủy kết nối từ Front End 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  37 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+REQUEST HEADER: 
+
+- Message Length = 16 
+- Command Id: 0x0A 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Null 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 16 bytes. 
+Command Id 4 Int M 0x0A 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back 
+
+End trả về 
+
+4.2.3.6 TERMINATE RESP 
+Là bản tin BACK END trả về khi có yêu cầu hủy kết nối từ Front End 
+
+REQUEST HEADER: 
+
+- Message Length = 20 
+- Command Id: 0x0B 
+- Request Id: giá trị Front End truyền đến 
+- Session Id: Back End tạo ra duy nhất 
+
+REQUEST BODY: 
+
+- Status: trạng thái hủy kết nối 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 20 bytes. 
+Command Id 4 Int M 0x0B 
+Request Id 4 Int M Thông tin Front End gửi đến 
+Session Id 4 Int M Backend sẽ gửi thông tin session id sau 
+
+khi đăng nhập, được sinh duy nhất trong 
+hệ thống 
+
+Status 4 Int M Trạng thái hủy kết nối 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Description 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  38 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+0 Thành công 
+1 Không thành công 
+
+4.2.3.7 CHECKIN 
+Là bản tin Front End gửi đến Back End khi xe vào trạm để kiểm tra phương tiện có cho phép mở barie tự động 
+theo ETC hay không. 
+
+REQUEST HEADER: 
+
+- Message Length = 98 
+- Command Id: 0x04 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Etag: thông tin EPC của Etag của phương tiện (ko càn gửi EPC đến backend) 
+- Station: mã trạm 
+- Lane: mã làn mà phương tiện đi qua tại trạm thu phí. Một số trạm mà cổng long môn đặt xa, có thể 
+
+chưa xác định được chính xác mã làn khi xe vào trạm thì sẽ nhập vào là 0 
+- Plate: biển số của phương tiện do FE ghi nhận. Có thể được dùng khi Etag không xác định. 
+- TID: mã số giao dịch mà đầu đọc thẻ tại FE ghi nhận được. TID là một chuỗi 96 bít. Và khác nhau giữa 
+
+mỗi lần đọc. TID và EPC kết hợp cùng nhau có thể xác định được đây có phải là thẻ của VETC hay 
+không. 
+
+- Hash Value: là giá trị bảo mật trong thẻ Etag, được biết duy nhất bởi VETC. Chỉ đọc được khi có đủ 
+thông tin được phép. 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 48 bytes. 
+Command Id 4 Int M 0x04 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back End trả 
+
+về 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+Station 4 Int M Mã trạm thu phí đang xử lý 
+Lane 4 Int O Mã làn mà phương tiện đi qua tại trạm thu 
+
+phí. Một số trạm mà cổng long môn đặt xa, 
+có thể chưa xác định được chính xác mã làn 
+khi xe vào trạm thì sẽ nhập vào là 0 
+
+Plate 10 String O Biển số phương tiện. Nếu không xác định 
+được biển số, giá trị truyền vào là <rỗng>. 
+
+TID 24 String O TID của Etag mà Front End đọc được từ đầu 
+đọc thẻ trong mỗi lần đọc. Đây là chuỗi 96 
+bít, và được chuyển dang dạng Text Hecxa. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  39 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Nếu không xác định được, giá trị truyền vào 
+là <rỗng>. 
+
+Hash Value 16 String O Giá trị bảo mật của thẻ Etag để phân biệt 
+chính xác thẻ của VETC với các thẻ khác. Đây 
+là chuỗi 64 bít, và được chuyển dang dạng 
+Text Hecxa. Nếu không xác định được, giá trị 
+truyền vào là <rỗng>. 
+
+4.2.3.8 CHECKIN RESP 
+Là bản tin BACK END trả về khi có yêu cầu kiểm tra phương tiện từ Front End 
+
+REQUEST HEADER: 
+
+- Message Length = 86 
+- Command Id: 0x05 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Status: trạng thái phản hồi, cho biết hình thức qua trạm sẽ là ETC/MTC. 
+- Etag: Etag của phương tiện theo bản tin checkin yêu cầu 
+- Station: thông tin trạm yêu cầu 
+- Lane: thông tin làn yêu cầu 
+- Ticket Id: mã vé của giao dịch xe qua trạm, duy nhất trên toàn hệ thống, do Back End quản lý. Khi 
+
+thực hiện trừ tiền hoặc khôi phục tiền giữ trên tài khoản, Front End cần phải trả về ticket id này. 
+- Ticket Type: cho biết loại vé là vé tháng hay vé lượt. 
+- Price: số tiền sẽ bị trừ/cần trừ (để hiển thị trên bảng điện tử). 
+- Vehicle Type: loại phương tiện (để hiển thị trên bảng điện tử). 
+- Plate: biển số xe ứng với Etag khi đăng kí (để Front End có thể kiểm tra so sánh với biển số thực tế xe 
+
+khi qua trạm). 
+- Plate Type: loại biển số xanh, trắng, ngoại giao, nước ngoài 
+- Price Ticket Type: ID của loại giá vé miễn giảm. 1 là giá vé thường. Các giá trị khác là loại giá vé miễn 
+
+giảm tùy theo từng trạm, sẽ được cập nhật tùy thuộc vận hành thực tế. 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 78 bytes. 
+Command Id 4 Int M 0x05 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back End trả 
+
+về 
+Status 4 Int M Mã trạng thái giao dịch 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  40 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Station 4 Int M Mã trạm.  
+- Đối với trạm hở bằng chính nó.  
+- Đối với trạm kín là mã trạm khi xe 
+
+qua trạm vào.  
+- Trong trường hợp trạm kín, xe đi qua 
+
+trạm ra, nhưng không tìm thấy giao 
+dịch trong trạm vào, coi như trạm 
+hở, sẽ truyền station id của bản tin 
+checkin 
+
+Lane 4 Int O Mã làn mà phương tiện đi qua tại trạm thu 
+phí. Một số trạm mà cổng long môn đặt xa, 
+có thể chưa xác định được chính xác mã làn 
+khi xe vào trạm thì sẽ nhập vào là 0. Đối với 
+trạm kín là mã làn khi xe qua trạm vào, đối 
+với trạm hở là thì làn vào giống làn ra 
+
+Ticket Id 4 Int M Mã vé của giao dịch xe qua trạm, duy nhất 
+trên toàn hệ thống, do Back End quản lý. Khi 
+thực hiện trừ tiền hoặc khôi phục tiền giữ 
+trên tài khoản, Front End cần phải trả về 
+ticket id này. 
+
+Ticket Type 4 Int M Là loại vé. Như vé tháng, vé lượt, vé quí hay 
+vé năm. 
+
+Price 4 Int M Giá cước sẽ bị trừ để Front End hiển thị trên 
+bảng điện tử. 
+
+Vehicle Type 4 Int M Loại phương tiện, để Front End hiển thị trên 
+bảng điện tử. 
+
+Plate 10 String M Biển số xe, để Front End hiển thị trên bảng 
+điện tử hoặc phân tích sai lệch. 
+
+Plate Type 4 Int M Loại biển số: trắng, xanh, đỏ, ngoại giao, 
+nước ngoài. 
+
+Price Ticket Type 4 Int M ID của loại giá vé miễn giảm. 1 là giá vé 
+thường. Các giá trị khác là loại giá vé miễn 
+giảm tùy theo từng trạm, sẽ được cập nhật 
+tùy thuộc vận hành thực tế. 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Code Description 
+0  Thành công  ETC 
+
+100 SUBSCRIBER_NOT_FOUND Không tìm thấy thuê bao 
+Trạng thái thuê bao không hợp lệ (không 
+
+101 SUBSCRIBER_IS_NOT_ACTIVE active) 
+102 ACCOUNT_IS_NOT_ACTIVE Tài khoản không hợp lệ (không active) 
+
+Etag không hợp lệ (không phải trạng thái 
+103 ETAG_IS_NOT_ACTIVE active) 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  41 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+104 ACCOUNT_NOT_ENOUGH_MONEY Tài khoản không đủ tiền 
+Không tìm thấy tài khoản gắn với ETAG 
+
+105 ACCOUNT_NOT_FOUND 
+Tài khoản nợ vượt quá hạn mức cho phép 
+
+106 DEBIT_AMOUNT_IS_OVER 
+Tài khoản nợ đã quá thời gian ân hạn. 
+
+107 DEBIT_IS_OVERTIME 
+Không tìm thấy giao dịch CHECKIN (khi 
+
+200 NOT_FOUND_TOLL_TRANSACTION COMMIT) 
+Không tìm thấy giao dịch qua trạm kín (khi 
+
+201 NOT_FOUND_LANE_TRANSACTION commit/rollback ở trạm vào hoặc trạm ra) 
+Không tìm thấy giao dịch qua trạm kín (khi 
+
+202 NOT_FOUND_ROUTE_TRANSACTION CHECKIN ở trạm ra) 
+Hết thời gian hiệu lực của SESSION CHECKIN 
+
+203 CHECKIN_SESSION_TIMEOUT (trạm kín) 
+Không tìm làn tương ướng với trạm (Làn 
+
+301 NOT_FOUND_STATION_LANE không hợp lệ) 
+Không tìm thấy cung đường tương ứng 
+
+302 NOT_FOUND_STAGE (Trạm Kín) 
+Không tìm thấy bảng giá ứng với Trạm hoặc 
+
+303 NOT_FOUND_PRICE_INFO Cung đường 
+304 PRICE_FORMAT_INCORRECT Giá tiền không hợp lệ 
+
+Closed  Session ID truyền vào không đúng phiên 
+socket đăng nhập. 
+
+Station ID truyền vào không đúng Station ID 
+đăng nhập 
+
+- Danh mục loại phương tiện phản hồi của Vehicle Type: 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+ 
+
+- Danh mục loại biển số Plate Type 
+
+Plate Type Description 
+1 Biển trắng 
+2 Biển xanh 
+3 Biển đỏ 
+4 Biển ngoại giao 
+5 Biển nước ngoài 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  42 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+ 
+
+- Danh mục loại vé Ticket Type 
+
+Ticket Type Description 
+0 Vé tháng 
+1 Vé lượt 
+2 Vé quí 
+3 Vé năm 
+
+- Danh mục loại  miễn giảm Price Ticket Type 
+
+Ticket Type Description 
+1 Giá thường 
+2 Giá ưu đãi 
+3 Giảm giá địa bàn trạm Tư Nghĩa 
+4 Miễn giảm địa phương 
+5 Giảm giá 50% 
+6 Giảm giá Trạm Hoàng Mai 
+7 Vé tháng/quý Cầu Bến Thủy 
+8 Giảm giá 40% 
+9 Giảm giá 20% 
+10 Giảm giá từ 30% đến 35% 
+
+Loại vé miễn giảm có thể được cập nhật thêm theo thực tế vận hành. 
+
+ 
+
+4.2.3.9 COMMIT 
+Là bản tin Front End gửi khi muốn thực hiện trừ tiền tài khoản xe qua trạm. 
+
+REQUEST HEADER: 
+
+- Message Length = 86 
+- Command Id: 0x06 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Etag: thông tin etag của phương tiện 
+- Station: mã trạm thu phí đang xử lý 
+- Lane: Làn thực tế khi xe đi qua (để hậu kiểm, xảy ra khi trường hợp đảo làn hoặc cổng long môn ở xa) 
+- Ticket Id: id của giao dịch (kết quả của CHECKIN RESP). 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  43 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+- Plate: biển số thực tế camera nhận được. 
+- Image Count: số lượng ảnh liên quan. Tên ảnh sẽ hiểu là Ticket Id_0x. Trong đó X là Image Count. 
+- Vehicle Length: là thông tin chiều dài phương tiện mà FE có thể nhận dạng được. Thông tin chiều dài 
+
+này sẽ được sử dụng trong trường hợp xe Rơ Mooc đầu kéo dài 20feet hay 40feet thực tế đi qua 
+trạm. 
+
+- Transaction Amount: giá tiền thực tế của xe khi qua trạm được tính bởi FE. Nếu khác không, số tiền 
+thực trừ sẽ là Transaction Amount. Nếu bằng không, số tiền thực trừ sẽ là số tiền được giữ như trong 
+bản tin trả về CHECKIN_RESP. 
+
+- Weight: Cân nặng trọng tải xe, nếu chưa xác định được cân nặng thì nhập vào là 0. 
+- Reason ID: Lý do commit/rollback, phục vụ cho một số trạm đặc biệt, mặc định là 0. 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 70 bytes. 
+Command Id 4 Int M 0x06 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back 
+
+End trả về 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+Station 4 Int M Mã trạm thu phí đang xử lý 
+Lane 4 Int O Mã làn mà phương tiện đi qua tại trạm 
+
+thu phí. Một số trạm mà cổng long môn 
+đặt xa, có thể chưa xác định được chính 
+xác mã làn khi xe vào trạm thì sẽ nhập 
+vào là 0 
+
+Ticket Id 4 Int M Mã vé giao dịch Front End nhận được từ 
+Back End khi Reserve. 
+
+Status 4 Int M Trạng thái khớp biển số 
+Plate 10 String O Biển số thực tế. Có thể là <rỗng> nếu 
+
+Front End không nhận dạng được. 
+Image Count 4 Int O Số lượng ảnh chụp liên quan. 
+Vehicle Length 4 Int O Chiều dài của phương tiện đi qua làn thu 
+
+phí. Nếu không xác định được chiều dài, 
+giá trị truyền vào bằng 0. Đơn vị là 
+centimet (cm) 
+
+Transaction 4 Int O Giá tiền thực tế của xe khi đi qua trạm. 
+Amount Nếu bằng 0, sẽ hiểu là FE không tính tiền, 
+
+và BE sẽ tính và trừ tiền như đã được 
+định nghĩa trong danh mục giá. 
+
+Weight 4 Int O Cân nặng trọng tải xe, nếu chưa xác định 
+được cân nặng thì nhập vào là 0. 
+
+Reason ID 4 Int O Lý do commit/rollback, phục vụ cho một 
+số trạm đặc biệt, mặc định là 0. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  44 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Danh mục trạng thái khớp biển số của status: 
+
+Status Description 
+0 Không khớp biển số giữa Front End và Back End 
+1 Khớp biển số 
+2 Không nhận diện được biển số. 
+
+- Danh mục mã lý do: 
+
+Reason ID Description 
+1 Commit giao dịch thông thường 
+2 Commit giao dịch do hết thời gian tạm giữ tiền (timeout) 
+3 Commit giao dịch chờ hoàn tiền nhưng đi vào làn thường 
+
+4.2.3.10 COMMIT RESP 
+Là bản tin BACK END trả về khi có yêu cầu trừ tiền tài khoản từ Front End. 
+
+REQUEST HEADER: 
+
+- Message Length = 20 
+- Command Id: 0x07 
+- Request Id: giá trị Front End truyền đến 
+- Session Id: Back End tạo ra duy nhất 
+
+REQUEST BODY: 
+
+- Status: trạng thái hủy kết nối 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 20 bytes. 
+Command Id 4 Int M 0x07 
+Request Id 4 Int M Thông tin Front End gửi đến 
+Session Id 4 Int M Backend sẽ gửi thông tin session id sau 
+
+khi đăng nhập, được sinh duy nhất trong 
+hệ thống 
+
+Status 4 Int M Trạng thái trừ tiền 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Code Description 
+0  Thành công  ETC 
+
+100 SUBSCRIBER_NOT_FOUND Không tìm thấy thuê bao 
+Trạng thái thuê bao không hợp lệ (không 
+
+101 SUBSCRIBER_IS_NOT_ACTIVE active) 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  45 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+102 ACCOUNT_IS_NOT_ACTIVE Tài khoản không hợp lệ (không active) 
+Etag không hợp lệ (không phải trạng thái 
+
+103 ETAG_IS_NOT_ACTIVE active) 
+104 ACCOUNT_NOT_ENOUGH_MONEY Tài khoản không đủ tiền 
+
+Không tìm thấy tài khoản gắn với ETAG 
+105 ACCOUNT_NOT_FOUND 
+
+Không tìm thấy giao dịch CHECKIN (khi 
+200 NOT_FOUND_TOLL_TRANSACTION COMMIT) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+201 NOT_FOUND_LANE_TRANSACTION commit/rollback ở trạm vào hoặc trạm ra) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+202 NOT_FOUND_ROUTE_TRANSACTION CHECKIN ở trạm ra) 
+
+Hết thời gian hiệu lực của SESSION CHECKIN 
+203 CHECKIN_SESSION_TIMEOUT (trạm kín) 
+
+Không tìm làn tương ướng với trạm (Làn 
+301 NOT_FOUND_STATION_LANE không hợp lệ) 
+
+Không tìm thấy cung đường tương ứng 
+302 NOT_FOUND_STAGE (Trạm Kín) 
+
+Không tìm thấy bảng giá ứng với Trạm hoặc 
+303 NOT_FOUND_PRICE_INFO Cung đường 
+304 PRICE_FORMAT_INCORRECT Giá tiền không hợp lệ 
+
+Closed  Session ID truyền vào không đúng phiên 
+socket đăng nhập. 
+
+Station ID truyền vào không đúng Station ID 
+đăng nhập 
+
+4.2.3.11 ROLLBACK 
+Là bản tin Front End gửi đến Back End để hủy giao dịch giữ tiền đối với xe không qua trạm. 
+
+REQUEST HEADER: 
+
+- Message Length = 78 
+- Command Id: 0x08 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Etag: etag của phương tiện yêu cầu 
+- Station: trạm phương tiện yêu cầu 
+- Lane: làn phương tiện yêu cầu 
+- Ticket Id: id của giao dịch (kết quả của CHECKIN RESP). 
+- Status: trạng thái phản hồi, cho biết hình thức qua trạm sẽ là ETC/MTC. 
+- Plate: biển số thực tế nhận dạng được. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  46 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Image Count: số ảnh chụp phương tiện Front End chụp được. Tên ảnh sẽ là Ticket Id_0x (trong đó X = 
+Image Count). 
+
+- Weight: Cân nặng trọng tải xe, nếu chưa xác định được cân nặng thì nhập vào là 0. 
+- Reason ID: Lý do commit/rollback, phục vụ cho một số trạm đặc biệt, mặc định là 0. 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 70 bytes. 
+Command Id 4 Int M 0x08 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back 
+
+End trả về 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+Station 4 Int M Mã trạm thu phí đang xử lý 
+Lane 4 Int O Mã làn mà phương tiện đi qua tại trạm 
+
+thu phí. Một số trạm mà cổng long môn 
+đặt xa, có thể chưa xác định được chính 
+xác mã làn khi xe vào trạm thì sẽ nhập 
+vào là 0 
+
+Ticket Id 4 Int M Mã vé giao dịch Front End nhận được từ 
+Back End khi Checkin. 
+
+Status 4 Byte M Trạng thái khớp biển số 
+Plate 10 String O Biển số thực tế. Có thể là NULL nếu Front 
+
+End không nhận dạng được. 
+Image Count 4 Int O số ảnh chụp phương tiện Front End chụp 
+
+được. Tên ảnh sẽ là Ticket Id_0x (trong 
+đó X = Image Count). 
+
+Weight 4 Int O Cân nặng trọng tải xe, nếu chưa xác định 
+được cân nặng thì nhập vào là 0. 
+
+Reason ID 4 Int O Lý do commit/rollback, phục vụ cho một 
+số trạm đặc biệt, mặc định là 0. 
+
+- Danh mục mã lý do: 
+
+Reason ID Description 
+21 Rollback giao dịch thông thường 
+22 Rollback giao dịch chờ hoàn tiền, để hoàn tiền khi đi qua làn hoàn 
+
+tiền 
+23 Rollback giao dịch miễn phí của FE 
+
+4.2.3.12 ROLLBACK RESP 
+Là bản tin BACK END trả về khi có yêu cầu hủy giao dịch giữ tiền từ Front End 
+
+REQUEST HEADER: 
+
+- Message Length = 20 
+ 
+
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  47 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Command Id: 0x09 
+- Request Id: giá trị Front End truyền đến 
+- Session Id: Back End tạo ra duy nhất 
+
+REQUEST BODY: 
+
+- Status: trạng thái hủy giao dịch 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 20 bytes. 
+Command Id 4 Int M 0x09 
+Request Id 4 Int M Thông tin Front End gửi đến 
+Session Id 4 Int M Backend sẽ gửi thông tin session id sau 
+
+khi đăng nhập, được sinh duy nhất trong 
+hệ thống 
+
+Status 4 Int M Trạng thái hủy giao dịch 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Code Description 
+0  Thành công  ETC 
+
+100 SUBSCRIBER_NOT_FOUND Không tìm thấy thuê bao 
+Trạng thái thuê bao không hợp lệ (không 
+
+101 SUBSCRIBER_IS_NOT_ACTIVE active) 
+102 ACCOUNT_IS_NOT_ACTIVE Tài khoản không hợp lệ (không active) 
+
+Etag không hợp lệ (không phải trạng thái 
+103 ETAG_IS_NOT_ACTIVE active) 
+104 ACCOUNT_NOT_ENOUGH_MONEY Tài khoản không đủ tiền 
+
+Không tìm thấy tài khoản gắn với ETAG 
+105 ACCOUNT_NOT_FOUND 
+
+Không tìm thấy giao dịch CHECKIN (khi 
+200 NOT_FOUND_TOLL_TRANSACTION COMMIT) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+201 NOT_FOUND_LANE_TRANSACTION commit/rollback ở trạm vào hoặc trạm ra) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+202 NOT_FOUND_ROUTE_TRANSACTION CHECKIN ở trạm ra) 
+
+Hết thời gian hiệu lực của SESSION CHECKIN 
+203 CHECKIN_SESSION_TIMEOUT (trạm kín) 
+
+Không tìm làn tương ướng với trạm (Làn 
+301 NOT_FOUND_STATION_LANE không hợp lệ) 
+
+Không tìm thấy cung đường tương ứng 
+302 NOT_FOUND_STAGE (Trạm Kín) 
+
+Không tìm thấy bảng giá ứng với Trạm hoặc 
+303 NOT_FOUND_PRICE_INFO Cung đường 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  48 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+304 PRICE_FORMAT_INCORRECT Giá tiền không hợp lệ 
+Closed  Session ID truyền vào không đúng phiên 
+socket đăng nhập. 
+
+Station ID truyền vào không đúng Station ID 
+đăng nhập 
+
+ 
+
+4.2.3.13 CHARGE 
+Là bản tin Front End gửi khi muốn thực hiện trừ tiền luôn tài khoản xe qua trạm. 
+
+REQUEST HEADER: 
+
+- Message Length = 48 
+- Command Id: 0x0C 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Etag: thông tin EPC của etag của phương tiện 
+- Station: mã trạm thu phí 
+- Lane: Làn thực tế khi xe đi qua (để hậu kiểm, xảy ra khi trường hợp đảo làn hoặc cổng long môn ở xa) 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 48 bytes. 
+Command Id 4 Int M 0x0C 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back 
+
+End trả về 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+Station 4 Int M Mã trạm thu phí đang xử lý 
+Lane 4 Int M Làn thực tế khi xe đi qua (để hậu kiểm, 
+
+xảy ra khi trường hợp đảo làn hoặc cổng 
+long môn ở xa) 
+
+ 
+
+4.2.3.14 CHARGE_RESP 
+Là bản tin BACK END trả về khi có yêu cầu trừ tiền luôn phương tiện từ Front End 
+
+REQUEST HEADER: 
+
+- Message Length = 74 
+- Command Id: 0x0D 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  49 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Etag: thông tin EPC của phương tiện 
+- Station: trạm thu phí xe đi qua 
+- Lane: làn thu phí xe đi qua 
+- Ticket Type: cho biết loại vé là vé tháng hay vé lượt. 
+- Status: trạng thái phản hồi, cho biết hình thức qua trạm sẽ là ETC/MTC. 
+- Price: số tiền sẽ bị trừ/cần trừ (để hiển thị trên bảng điện tử). 
+- Vehicle Type: loại phương tiện (để hiển thị trên bảng điện tử). 
+- Plate: biển số xe ứng với Etag khi đăng kí (để Front End có thể kiểm tra so sánh với biển số thực tế xe 
+
+khi qua trạm). 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 78 bytes. 
+Command Id 4 Int M 0x0D 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back End trả 
+
+về 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+Station 4 Int M Mã trạm thu phí ra nếu trạm kín , trạm hở thì 
+
+bằng chính trạm đang xử lý. 
+Lane 4 Int M Làn thực tế khi xe đi qua (để hậu kiểm, xảy ra 
+
+khi trường hợp đảo làn hoặc cổng long môn ở 
+xa), trạm kín là mã làn vào, trạm hở bằng 
+chính nó. 
+
+Ticket Type 4 Int M Là vé tháng hay vé lượt: 0- vé tháng, 1 vé 
+lượt. 
+
+Status 4 Int M Mã trạng thái giao dịch 
+Price 4 Int M Giá cước sẽ bị trừ để Front End hiển thị trên 
+
+bảng điện tử. 
+Vehicle Type 4 Int M Loại phương tiện, để Front End hiển thị trên 
+
+bảng điện tử. 
+Plate 10 String M Biển số xe, để Front End hiển thị trên bảng 
+
+điện tử hoặc phân tích sai lệch. 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Code Description 
+0  Thành công  ETC 
+
+100 SUBSCRIBER_NOT_FOUND Không tìm thấy thuê bao 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  50 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Trạng thái thuê bao không hợp lệ (không 
+101 SUBSCRIBER_IS_NOT_ACTIVE active) 
+102 ACCOUNT_IS_NOT_ACTIVE Tài khoản không hợp lệ (không active) 
+
+Etag không hợp lệ (không phải trạng thái 
+103 ETAG_IS_NOT_ACTIVE active) 
+104 ACCOUNT_NOT_ENOUGH_MONEY Tài khoản không đủ tiền 
+
+Không tìm thấy tài khoản gắn với ETAG 
+105 ACCOUNT_NOT_FOUND 
+
+Không tìm thấy giao dịch CHECKIN (khi 
+200 NOT_FOUND_TOLL_TRANSACTION COMMIT) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+201 NOT_FOUND_LANE_TRANSACTION commit/rollback ở trạm vào hoặc trạm ra) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+202 NOT_FOUND_ROUTE_TRANSACTION CHECKIN ở trạm ra) 
+
+Hết thời gian hiệu lực của SESSION CHECKIN 
+203 CHECKIN_SESSION_TIMEOUT (trạm kín) 
+
+Không tìm làn tương ướng với trạm (Làn 
+301 NOT_FOUND_STATION_LANE không hợp lệ) 
+
+Không tìm thấy cung đường tương ứng 
+302 NOT_FOUND_STAGE (Trạm Kín) 
+
+Không tìm thấy bảng giá ứng với Trạm hoặc 
+303 NOT_FOUND_PRICE_INFO Cung đường 
+304 PRICE_FORMAT_INCORRECT Giá tiền không hợp lệ 
+
+Closed  Session ID truyền vào không đúng phiên 
+socket đăng nhập. 
+
+Station ID truyền vào không đúng Station ID 
+đăng nhập 
+
+- Danh mục loại phương tiện phản hồi của Vehicle Type: 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+ 
+
+4.2.3.15 PASS_AND_HOLD 
+Là bản tin danh cho trạm có làn giữ tiền - hoàn tiền. Bản tin này được Front-end thực hiện khi xe đi qua barie 
+của làn giữ tiền. Bản tin này xác nhận xe đã chính thức đi qua trạm nhưng chưa commit như các làn thông 
+thường mà vẫn tiếp tục giữ tiền. 
+
+REQUEST HEADER: 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  51 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- Message Length = 86 
+- Command Id: 0x0E 
+- Request Id: Front End tạo duy nhất và truyền đến 
+- Session Id: Session phiên đăng nhập nhận được từ CONNECT RESP 
+
+REQUEST BODY: 
+
+- Etag: thông tin etag của phương tiện 
+- Station: mã trạm thu phí đang xử lý 
+- Lane: Làn thực tế khi xe đi qua (để hậu kiểm, xảy ra khi trường hợp đảo làn hoặc cổng long môn ở xa) 
+- Ticket Id: id của giao dịch (kết quả của CHECKIN RESP). 
+- Status: trạng thái so sánh ảnh biển số là khớp/không khớp. 
+- Plate: biển số thực tế camera nhận được. 
+- Image Count: số lượng ảnh liên quan. Tên ảnh sẽ hiểu là Ticket Id_0x. Trong đó X là Image Count. 
+- Vehicle Length: là thông tin chiều dài phương tiện mà FE có thể nhận dạng được. Thông tin chiều dài 
+
+này sẽ được sử dụng trong trường hợp xe Rơ Mooc đầu kéo dài 20feet hay 40feet thực tế đi qua 
+trạm. 
+
+- Transaction Amount: giá tiền thực tế của xe khi qua trạm được tính bởi FE. Nếu khác không, số tiền 
+thực trừ sẽ là Transaction Amount. Nếu bằng không, số tiền thực trừ sẽ là số tiền được giữ như trong 
+bản tin trả về CHECKIN_RESP. 
+
+- Weight: Cân nặng trọng tải xe, nếu chưa xác định được cân nặng thì nhập vào là 0. 
+- Reason ID: Lý do commit/rollback, phục vụ cho một số trạm đặc biệt, mặc định là 0. 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 86 bytes. 
+Command Id 4 Int M 0x0E 
+Request Id 4 Int M Thông tin duy nhất Front End gửi đến 
+Session Id 4 Int M Session của phiên đăng nhập, do Back 
+
+End trả về 
+Etag 24 String M Thông tin EPC của etag của phương tiện 
+Station 4 Int M Mã trạm thu phí đang xử lý 
+Lane 4 Int O Mã làn mà phương tiện đi qua tại trạm 
+
+thu phí. Một số trạm mà cổng long môn 
+đặt xa, có thể chưa xác định được chính 
+xác mã làn khi xe vào trạm thì sẽ nhập 
+vào là 0 
+
+Ticket Id 4 Int M Mã vé giao dịch Front End nhận được từ 
+Back End khi Reserve. 
+
+Status 4 Int M Trạng thái khớp biển số 
+Plate 10 String O Biển số thực tế. Có thể là <rỗng> nếu 
+
+Front End không nhận dạng được. 
+Image Count 4 Int O Số lượng ảnh chụp liên quan. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  52 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Vehicle Length 4 Int O Chiều dài của phương tiện đi qua làn thu 
+phí. Nếu không xác định được chiều dài, 
+giá trị truyền vào bằng 0. Đơn vị là 
+centimet (cm) 
+
+Transaction 4 Int O Giá tiền thực tế của xe khi đi qua trạm. 
+Amount Nếu bằng 0, sẽ hiểu là FE không tính tiền, 
+
+và BE sẽ tính và trừ tiền như đã được 
+định nghĩa trong danh mục giá. 
+
+Weight 4 Int O Cân nặng trọng tải xe, nếu chưa xác định 
+được cân nặng thì nhập vào là 0. 
+
+Reason ID 4 Int O Lý do commit/rollback, phục vụ cho một 
+số trạm đặc biệt, mặc định là 0. 
+
+- Danh mục trạng thái khớp biển số của status: 
+
+Status Description 
+0 Không khớp biển số giữa Front End và Back End 
+1 Khớp biển số 
+2 Không nhận diện được biển số. 
+
+- Danh mục mã lý do: 
+
+Reason ID Description 
+2 Commit giao dịch giữ tiền do vào làn thường. 
+21 Rollback giữ tiền. 
+
+ 
+
+4.2.3.16 PASS_AND_HOLD_RESP 
+Làn bản tin trả về của Backend khi gọi lệnh PASS_AND_HOLD. 
+
+REQUEST HEADER: 
+
+- Message Length = 20 
+- Command Id: 0x0F 
+- Request Id: giá trị Front End truyền đến 
+- Session Id: Back End tạo ra duy nhất 
+
+REQUEST BODY: 
+
+- Status: trạng thái hủy kết nối 
+
+Field Bytes Data Type Mandatory Description 
+Message Length 4 Int  M Kích thước bản tin này:  
+
+Fix = 20 bytes. 
+Command Id 4 Int M 0x0F 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  53 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Request Id 4 Int M Thông tin Front End gửi đến 
+Session Id 4 Int M Backend sẽ gửi thông tin session id sau 
+
+khi đăng nhập, được sinh duy nhất trong 
+hệ thống 
+
+Status 4 Int M Trạng thái giữ tiền 
+
+- Danh mục trạng thái phản hồi của status: 
+
+Status Code Description 
+0  Thành công  ETC 
+
+100 SUBSCRIBER_NOT_FOUND Không tìm thấy thuê bao 
+Trạng thái thuê bao không hợp lệ (không 
+
+101 SUBSCRIBER_IS_NOT_ACTIVE active) 
+102 ACCOUNT_IS_NOT_ACTIVE Tài khoản không hợp lệ (không active) 
+
+Etag không hợp lệ (không phải trạng thái 
+103 ETAG_IS_NOT_ACTIVE active) 
+104 ACCOUNT_NOT_ENOUGH_MONEY Tài khoản không đủ tiền 
+
+Không tìm thấy tài khoản gắn với ETAG 
+105 ACCOUNT_NOT_FOUND 
+
+Không tìm thấy giao dịch CHECKIN (khi 
+200 NOT_FOUND_TOLL_TRANSACTION COMMIT) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+201 NOT_FOUND_LANE_TRANSACTION commit/rollback ở trạm vào hoặc trạm ra) 
+
+Không tìm thấy giao dịch qua trạm kín (khi 
+202 NOT_FOUND_ROUTE_TRANSACTION CHECKIN ở trạm ra) 
+
+Hết thời gian hiệu lực của SESSION CHECKIN 
+203 CHECKIN_SESSION_TIMEOUT (trạm kín) 
+
+Không tìm làn tương ướng với trạm (Làn 
+301 NOT_FOUND_STATION_LANE không hợp lệ) 
+
+Không tìm thấy cung đường tương ứng 
+302 NOT_FOUND_STAGE (Trạm Kín) 
+
+Không tìm thấy bảng giá ứng với Trạm hoặc 
+303 NOT_FOUND_PRICE_INFO Cung đường 
+304 PRICE_FORMAT_INCORRECT Giá tiền không hợp lệ 
+
+Closed  Session ID truyền vào không đúng phiên 
+socket đăng nhập. 
+
+Station ID truyền vào không đúng Station ID 
+đăng nhập 
+
+ 
+
+ 
+
+4.2.4 Yêu cầu về tải xử lý 
+Đơn 
+
+ID Khoản mục TH1 TH2 TH3 TH4 TH5 TH6 TH7 vị 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  54 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+60 50 40 30 20 10 5 km/h 
+1 Tốc độ xe qua trạm 16.67 13.89 11.11 8.33 5.56 2.78 1.39 m/s 
+
+Chiều dài từ điểm nhận dạng ETAG 1 
+2 đến điểm nhận dạng 2 10 10 10 10 10 10 10 m 
+
+Thời gian tổng xử l{ ETC tối đa cho 0.6 0.72 0.9 1.2 1.8 3.6 7.2 s 
+phép để ra quyết định MTC/ETC và mở 
+
+3 barie 600 720 900 1200 1800 3600 7200 ms 
+Chiều dài từ điểm nhận dạng ETAG 2 
+
+4 đến barie 10 10 10 10 10 10 10 m 
+Thời gian tổng xử l{ ETC tối đa cho 0.6 0.72 0.9 1.2 1.8 3.6 7.2 s 
+phép để ra quyết định MTC/ETC và mở 
+
+5 barie 600 720 900 1200 1800 3600 7200 ms 
+Thời gian mở barie từ khi bắt đầu đến 
+
+6 khi mở xong 600 600 600 600 600 600 600 ms 
+Thời gian chậm nhất hệ thống phải ra 
+lệnh mở barie sau khi đã có kết quả 
+
+7 MTC/ETC+B11 0 120 300 600 1200 3000 6600 ms 
+ 
+
+Với trường hợp giả định là trạm Quảng Bình, khi chiều dài từ Angten 1 đến điểm quyết định mở BARRIER, hay 
+thu phí MTC là 10 mét. 
+
+Tốc độ Thời gian tối đa Thời gian tối đa đáp Thời gian chấp nhận Khoảng an toàn 
+(km/h) cho hệ thống ứng của Back End được của BE (MIN (bằng thời gian tối 
+
+(ms) (ms)/chia đôi thời của 60% thời gian đa – thời gian BE) 
+gian xử lý cho BE và nhỏ nhất) 
+FE 
+
+60 600 300 200 400ms 
+50 720 360 200 520ms 
+40 900 450 200 700ms 
+30 1200 600 200 1000ms 
+20 1800 900 200 1600ms 
+10 3600 1800 200 3400ms 
+5 7200 3600 200 7000ms 
+ 
+
+Yêu cầu về tải xử lý: 
+
+- 99,999% giao dịch của BE với tất cả các loại tải của hệ thống, phải có tổng thời gian đáp ứng 
+<=200ms.  
+
+- BE phải đảm bảo cơ chế sẵn sàng cao. 
+
+ 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  55 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+4.3 GIAO THỨC TRUYỀN NHẬN FILE 
+Front End and Back End FTP Integration Offline
+
+Front End Back End
+
+[11 phút/lần]: White List & Black List 
+File
+
+[6 phút/lần]: ETDR File
+
+[1 ngày/ lần]: MTDR File
+
+ 
+
+4.3.1 Giao thức kết nối 
+- Front End và Back End được kết nối với nhau theo giao thức SFTP để truyền nhận file. 
+- Nếu dữ liệu do BE sinh ra (như WHITE LIST, BLACKLIST, CHANGE STATUS, PRICELIST), FE sẽ kết nối 
+
+vào BE để lấy về. BE khi đó sẽ cung cấp cho FE tài khoản để xác thực và truy nhập, và mở Firewall cho 
+phép FE truy nhập. 
+
+o Thông tin BE cung cấp: username/password. Port. 
+o BackEnd sẽ tạo cho mỗi Front End một thư mục truy nhập có cấu trúc sau: 
+
+ /Blacklist 
+ /Whitelist 
+ /Statuslist 
+ /Pricelist 
+ /CommuterTicket 
+
+- Nếu dữ liệu do FE sinh ra (như ETDR, MTDR, OFFLINE CDR, ẢNH chụp phương tiện). BE sẽ kết nối vào 
+FE để lấy về. FE khi đó sẽ cung cấp cho BE tài khoản để xác thực và truy nhập, và mở firewall cho 
+phép BE truy nhập (nếu có) 
+
+o Thông tin FE cung cấp: username/password. Port. 
+o FrontEnd sẽ tạo cho Back End một thư mục truy nhập có cấu trúc sau: 
+
+ /ETDR: chứa các file lịch sử ETC. 
+ /MTDR: chứa các file lịch sử MTC. 
+ /OTDR: chứa các file lịch sử ETC Offline. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  56 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+ /Media: chứa các file ảnh chụp phương tiện của đi qua trạm của FrontEnd. BE sẽ lấy 
+file ảnh về phục vụ cho mục đích hậu kiểm. Thư mục Media sẽ cần gồm TicketID_số 
+thứ tự chụp phương tiện. 
+
+ Cấu trúc thư mục của /Media sẽ gồm: 
+/Media/ETC(MTC)/YYYYMMDD/ticketid_mediatype_sequence_laneYYYYM
+MDDHHMISS.jpg Trong đó: 
+
+o /Media: tên thư mục chứa file ảnh 
+o ETC: thư mục file ảnh cho giao dịch ETC, MTC: thư mục ảnh cho 
+
+giao dịch MTC. 
+o YYYYMMDD: ngày chụp giao dịch 
+o Ticketid: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh 
+
+CHECKIN. 
+o Mediatype: chụp làn hay chụp biển số. 
+o Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n 
+
+cho mỗi giao dịch (mỗi ticket id). 
+o Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+o YYYYMMDDHHMISS: ngày giờ phút giây ảnh được chụp. 
+
+4.3.2 Cấu trúc file lịch sử chi tiết: 
+- File định dạng CSV cho các file giao dịch,  
+
+o Các trường cách nhau bởi dấu phẩy 
+o Cuối các trường có dấu ‘;’ định dạng kết thúc bản ghi. 
+o Dấu kí tự xuống dòng là chr(10) + chr(13) (\r\n) 
+
+- Cấu trúc thư mục: 
+o Mỗi loại file để trong 01 thư mục: 
+o Mỗi một ngày sinh ra một thư mục mới, định dạng YYYYMMDD 
+o Các file sinh ra trong ngày sẽ được tạo trong ngày hôm đó. 
+
+- Tên File: có các thông tin xác định được: 
+o Loại file: Ví dụ WL, BL,SL,… 
+o Trạm: Station ID của trạm. 
+o Ngày tháng tạo file: định dạng YYYYMMDD HH24MISS 
+o Sequence thứ tự file: do bên sinh file tạo ra để đảm bảo ko thiếu, ko trùng lặp. 4 byte, 
+
+sequence luân phiên từ 0000 đến 9999 
+
+4.3.3 Danh sách file và đặc tả dữ liệu 
+4.3.3.1 WHITE LIST – DANH SÁCH XE ƯU TIÊN 
+Là danh sách Etag được phép ưu tiên qua trạm. 
+
+BackEnd sẽ mở SFTP Server và cấp quyền cho Front End kết nối vào để lấy file về. Mỗi một Front End sẽ được 
+quyền đọc một thư mục riêng (gọi là FE Root). Front End sẽ không vào được BE server theo giao thức SSH. 
+
+Tần xuất sinh file: 11 phút/file. 
+ 
+
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  57 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+Cấu trúc thư mục: FE Root/Whitelist/YYYYMMDD/WL_STATION_YYYYMMDD_HH24MISS_0001.CSV. Trong 
+đó: 
+
+- FE Root: là thư mục Root mà FE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- WhiteList là thư mục chứa file WhiteList mà FE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày BE sẽ sinh đẩy file White List vào một ngày mới. 
+- WL_STATION_YYYYMMDD_HH24MISS_0001.CSV là tên file White List cần lấy. Trong đó: 
+
+o WL: tiền tố mô tả đây là file White List 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 11 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Nội dung file gồm 4 trường, cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu ; 
+
+a. Etag: mã etag của phương tiện. 24 kí tự 
+b. Biển số xe. Không có dấu – hoặc. Chỉ gồm các số và chữ cái liền nhau. 
+c. Thời gian bắt đầu. Định dạng DD/MM/YYYY HH24:MI:SS 
+
+d. Thời gian kết thúc. Định dạng DD/MM/YYYY HH24:MI:SS 
+e. (@since v1.2-filesync) vehicle_type: Loại phương tiện 
+
+Bắt buộc phải có 1 trong 2 trường etag hoặc biển số xe, vì xe ưu tiền chưa chắc đã có etag.  
+
+Ví dụ: 
+
+Đường dẫn tuyệt đối: /Whitelist/20160325/WL_0320_20160325_111600_0001.CSV 
+
+Tên file: WL_0320_20160325_111600_0001.CSV 
+
+89301100000031000C4669FB4,29B26961,01/03/2016 00:00:00,01/09/2016 00:00:00; 
+89301100000031001C5669FB4,29LD11865,01/03/2016 00:00:00,01/09/2016 00:00:00; 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+Bảng định nghĩa loại phương tiện: 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  58 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+ 
+
+4.3.3.2 BLACK LIST – DANH SÁCH XE HẠN CHẾ 
+Là danh sách Etag được bị chặn/cảnh báo khi đi qua trạm. 
+
+BackEnd sẽ mở SFTP Server và cấp quyền cho Front End kết nối vào để lấy file về. Mỗi một Front End sẽ được 
+quyền đọc một thư mục riêng (gọi là FE Root). Front End sẽ không vào được BE server theo giao thức SSH. 
+
+Tần xuất sinh file: 11 phút/file. 
+
+Cấu trúc thư mục: FE Root/Blacklist/YYYYMMDD/BL_STATION_YYYYMMDD_HH24MISS_0001.CSV. Trong đó: 
+
+- FE Root: là thư mục Root mà FE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- BlackList là thư mục chứa file WhiteList mà FE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày BE sẽ sinh đẩy file Black List vào một ngày mới. 
+- BL_STATION_YYYYMMDD_HH24MISS_0001.CSV là tên file Black List cần lấy. Trong đó: 
+
+o BL: tiền tố mô tả đây là file Black List 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 11 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Nội dung file gồm 4 trường, cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu ; 
+
+a. Etag: mã etag của phương tiện. 24 kí tự 
+b. Biển số xe. Không có dấu – hoặc. Chỉ gồm các số và chữ cái liền nhau. 
+c. Thời gian bắt đầu. Định dạng DD/MM/YYYY HH24:MI:SS 
+
+a. Thời gian kết thúc. Định dạng DD/MM/YYYY HH24:MI:SS 
+b. (@since v1.2-filesync) vehicle_type: Loại phương tiện 
+
+Bắt buộc phải có 1 trong 2 trường etag hoặc biển số xe, vì xe chặn chưa chắc đã có etag.  
+
+Ví dụ: 
+
+Đường dẫn tuyệt đối: /Blacklist/20160325/BL_0320_20160325_111600_0001.CSV 
+
+Tên file: BL_0320_20160325_111600_0001.CSV 
+
+89301100000031000C4669FB4,29B26961,01/03/2016 00:00:00,01/09/2016 00:00:00; 
+89301100000031001C5669FB4,29LD11865,01/03/2016 00:00:00,01/09/2016 00:00:00; 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  59 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+Bảng định nghĩa loại phương tiện: 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+ 
+
+4.3.3.3 CHANGE STATUS LIST – DANH SÁCH TRẠNG THÁI CỦA XE 
+Là danh sách trạng thái của xe có thay đổi, được sử dụng khi mất kết nối, đồng bộ 11 phút một lần. Thời gian 
+có thể cấu hình thay đổi. Khi kết nối từ FE đến BE bị lỗi, BE sẽ thực hiện mở barrie theo file này. Và sẽ sinh ra 
+file giao dịch Offline CDR. 
+
+Tần xuất sinh file: 11 phút/file. 
+
+BackEnd sẽ mở SFTP Server và cấp quyền cho Front End kết nối vào để lấy file về. Mỗi một Front End sẽ được 
+quyền đọc một thư mục riêng (gọi là FE Root). Front End sẽ không vào được BE server theo giao thức SSH. 
+
+Cấu trúc thư mục: FE Root/Statuslist/YYYYMMDD/SL_STATION_YYYYMMDD_HH24MISS_0001.CSV. Trong đó: 
+
+- FE Root: là thư mục Root mà FE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- StatusList là thư mục chứa file Change Status List mà FE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày BE sẽ sinh đẩy file Status List vào một ngày mới. 
+- SL_STATION_YYYYMMDD_HH24MISS_0001.txt là tên file Status List cần lấy. Trong đó: 
+
+o SL: tiền tố mô tả đây là file change status list 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 6 tiếng/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Các trường gồm: 
+
+ Đối với trạm mở 
+a. Etag: mã etag của phương tiện. 24 kí tựg 
+b. Biển số xe. Không có dấu – hoặc. Chỉ gồm các số và chữ cái liền nhau. 
+
+c. Loại phương tiện: 
+
+d. Trạng thái:  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  60 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+a. 1: cho phép đi khi mất kết nối (thường là số dư đủ cho phép) 
+b. 0: dừng khi mất kết nối (thường là ko đủ số dư cho phép). 
+
+Hiện tại hệ thống chỉ kiết xuất các etag có trạng thái 1. 
+a. (@since v1.2-filesync) Ticket Type: Loại vé 
+
+Ticket Type Description 
+0 Vé tháng 
+1 Vé lượt 
+2 Vé quí 
+3 Vé năm 
+
+e. (@since v1.2-filesync) Price Ticket Type – Loại giá vé miễn giảm 
+
+Price Ticket Description 
+Type 
+1 Giá thường 
+2 Giá ưu đãi 
+3 Giảm giá địa bàn trạm Tư Nghĩa 
+4 Miễn giảm địa phương 
+5 Giảm giá 50% 
+6 Giảm giá Trạm Hoàng Mai 
+7 Vé tháng/quý Cầu Bến Thủy 
+8 Giảm giá 40% 
+9 Giảm giá 20% 
+10 Giảm giá từ 30% đến 35% 
+
+f. (@since v1.2-filesync) Effective Date: ngày hiệu lực của vé tháng quý. Nếu etag đang tháng 
+quý thì có thông tin của ngày hiệu lực. Nếu không thì để trống. Khi xe đi qua trạm offline thì 
+sẽ kiểm tra thời hạn này của vé tháng quý. 
+
+g. (@since v1.2-filesync) End Date: ngày hết hiệu lực của vé tháng quý. Nếu etag đang có vé 
+tháng quý thì có thông tin ngày hết hiệu lực. Nếu không thì để trống. Khi xe đi qua trạm 
+offline thì sẽ kiểm tra thời hạn này của vé tháng quý. 
+
+Bảng định nghĩa loại phương tiện: 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+ 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  61 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+ Đối với trạm kín 
+a. Etag: mã etag của phương tiện. 24 kí tựg 
+b. Biển số xe. Không có dấu – hoặc. Chỉ gồm các số và chữ cái liền nhau. 
+
+c. Loại phương tiện: 
+d. Trạng thái:  
+
+a. 1: cho phép đi khi mất kết nối (thường là số dư đủ cho phép) 
+b. 0: dừng khi mất kết nối (thường là ko đủ số dư cho phép). 
+
+e. Danh mục loại phương tiện phản hồi của Vehicle Type: 
+
+ 
+
+Bảng định nghĩa loại phương tiện: 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+f. Trạm vào 
+g. Trạm ra 
+
+ 
+
+4.3.3.4 ETDR – GIAO DỊCH ETC QUA TRẠM MỞ 
+ETDR là file chứa các giao dịch ETC xe qua trạm tại Front End.  
+
+FrontEnd sẽ mở SFTP Server và cấp quyền cho Back End kết nối vào để lấy file về. Back End sẽ được quyền 
+đọc một thư mục riêng (gọi là BE Root). Back End sẽ không vào được FE server theo giao thức SSH. 
+
+Tần xuất sinh file: 5 phút/file. 
+
+Cấu trúc thư mục: BE Root/ETDR/YYYYMMDD/ETC_STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- BE Root: là thư mục Root mà BE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- ETDR là thư mục chứa file ETDR mà BE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày FE sẽ sinh đẩy file ETDR vào một ngày mới. 
+- ETC_STATION_YYYYMMDD_HH24MISS_0001.txt là tên file ETDR cần lấy. Trong đó: 
+
+o ETC: tiền tố mô tả đây là file ETC 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  62 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 5 phút/lần – tùy theo cấu 
+hình). Gồm 17 kí tự 
+
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+
+b. Station: mã trạm 
+c. Lane: mã làn  
+d. Ticket ID: mã giao dịch nhận được từ Back End. Trường hợp không có Ticket ID, thì dùng 
+
+Transaction ID của Front End. 
+e. Etag: mã etag của phương tiện 
+f. Plate: biển số xe nhận dạng được từ Camera 
+g. Checkin Datetime: ngày giờ xe vào trạm. Định dạng dd/mm/yyyy  hh24:mi:ss 
+h. Commit/Rollback Datetime: ngày giờ đóng giao dịch. Định dạng dd/mm/yyyy  hh24:mi:ss 
+i. Price: phí qua trạm thực tế trừ giao dịch (có thể là bằng với số tiền trả về trong bản tin 
+
+Checkin Resp, hoặc là số tiền FE tự tính). Trường hợp không mất phí thì đặt = 0. 
+j. Vehicle Type: Loại xe 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+k. Ticket Type: Loại vé 
+
+Ticket Type Description 
+0 Vé tháng 
+1 Vé lượt 
+2 Vé quí 
+3 Vé năm 
+
+l. Trạng thái nhận diện biển số của FE 
+a. 0 – không khớp 
+b. 1- khớp so với biển gắn với Etag 
+c. 2- không nhận diện dc 
+
+m. Trạng thái: trạng thái giao dịch(trừ tiền). Trường hợp đi bằng WL, BL không có giao dịch trừ 
+tiền thì đặt = 0. 
+
+a. 0: ETC trừ tiền thành công 
+b. 1: ETC trừ tiền lỗi 
+c. 3: ETC rollback thành công 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  63 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+d. 4: ETC rollback lỗi 
+n. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, cách nhau 
+
+bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh sẽ là 
+như sau: ticketid_mediatype_sequence_laneYYYYMMDDHHMISS.jpg. Trong đó, ảnh sẽ được 
+lưu ở thư mục 
+/Media/ETC/YYYYMMDD/ticketid_mediatype_sequence_laneYYYYMMDDHHMISS. Mỗi 
+trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. ETC: thư mục chứa file ảnh ETC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh CHECKIN, trường 
+
+hợp không có TicketId thì dùng Transaction ID của Frontend. 
+e. Mediatype: loại ảnh chụp:  
+
+ 01: chụp làn (bắt buộc) 
+ 02: chụp biển (bắt buộc) 
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+Có thể thêm loại ảnh theo thực tế triển khai. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+o. Trans_type: loại giao dịch 
+a. Trans_type= 101 (Giao dịch đi qua trạm mở thông thường) 
+b. Trans_type= 102 (Giao dịch đi qua trạm mở thông thường, cần camera hỗ trợ) 
+
+ 
+c. Trans_type= 201 (Giao dịch giữ tiền, khi đi vào làn giữ tiền) 
+d. Trans_type= 202 (Giao dịch commit giao dịch giữ tiền khi đi vào làn thường) 
+e. Trans_type= 203 (Giao dịch rollback giao dịch giữ tiền khi đi vào làn hoàn tiền) 
+
+ 
+f. Trans_type= 301 (Giao dịch miễn phí theo chiều) 
+g. Trans_type= 302 (Giao dịch miễn phí do đi cao tốc) 
+h. Trans_type= 303 (Giao dịch miễn phí do đã mua vé MTC) 
+
+p. White list/Black list/ETC normal 
+a. N- ETC Normal 
+b. W- White 
+c. B- Black list 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  64 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+4.3.3.5 MTDR – GIAO DỊCH MTC QUA TRẠM MỞ 
+MTDR là file chứa các giao dịch MTC xe qua trạm tại Front End. File định dạng CSV (các trường cách nhau 
+bằng dấu phẩy “,”) 
+
+FrontEnd sẽ mở SFTP Server và cấp quyền cho Back End kết nối vào để lấy file về. Back End sẽ được quyền 
+đọc một thư mục riêng (gọi là BE Root). Back End sẽ không vào được FE server theo giao thức SSH. 
+
+Tần xuất sinh file: 5 phút/file. 
+
+Cấu trúc thư mục: BE Root/MTDR/YYYYMMDD/MTC_STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- BE Root: là thư mục Root mà BE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- MTDR là thư mục chứa file MTDR mà BE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày FE sẽ sinh đẩy file MTDR vào một ngày mới. 
+- MTC_STATION_YYYYMMDD_HH24MISS_0001.txt là tên file ETDR cần lấy. Trong đó: 
+
+o MTC: tiền tố mô tả đây là file MTC 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 5 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+
+a. Request Id: Transaction ID do MTC tạo ra, phục vụ việc đối soát dữ liệu BE, FE 
+b. Station: mã trạm 
+c. Lane: mã làn  
+d. Plate: biển số xe nhận dạng được từ Camera 
+e. Ticket: mã vé do MTC tạo ra. 
+f. ETAG: ETAG của phương tiện nếu có 
+g. Datetime: ngày giờ thực hiện trừ tiền. 
+h. Price: phí qua trạm 
+i. Vehicle Type: Loại xe, loại phương tiện 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+j. Ticket Type: Loại vé 
+
+Ticket Type Description 
+ 
+
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  65 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+0 Vé tháng 
+1 Vé lượt 
+2 Vé quí 
+3 Vé năm 
+
+k. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, cách nhau 
+bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh sẽ là 
+như sau: ticketid_mediatype_sequence_laneYYYYMMD.jpg. Trong đó, ảnh sẽ được lưu ở 
+thư mục /Media/MTC/YYYYMMDD/transid_mediatype_sequence_laneYYYYMMDDHHMISS. 
+Mỗi trường có { nghĩa sau: 
+
+d. /Media: tên thư mục chứa file ảnh 
+e. MTC: là thư mục file ảnh MTC. 
+f. YYYYMMDD: ngày chụp giao dịch 
+a.  TransId: là TRANSACTION ID của giao dịch của Frontend 
+g. Mediatype: loại ảnh chụp:  
+
+ 01: chụp làn(bắt buộc) 
+ 02: chụp biển (bắt buộc) 
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+Có thể thêm loại ảnh theo thực tế triển khai. 
+h. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+i. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+j. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+l. White list/Black list/ETC normal 
+a. N- ETC Normal 
+b. W- White 
+c. B- Black list 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+4.3.3.6 OFFLINE DR – GIAO DỊCH ETC QUA TRẠM MỞ KHI XỬ LÝ 
+OFFLINE 
+
+OFFLCDR là file chứa các giao dịch ETC xe qua trạm tại Front End khi không có kết nối tới server trung tâm. 
+File định dạng CSV (các trường cách nhau bằng dấu phẩy “,”) 
+
+FrontEnd sẽ mở SFTP Server và cấp quyền cho Back End kết nối vào để lấy file về. Back End sẽ được quyền 
+đọc một thư mục riêng (gọi là BE Root). Back End sẽ không vào được FE server theo giao thức SSH. 
+
+Tần suất sinh file: 6 phút/file. 
+
+Cấu trúc thư mục: BE Root/ OTDR /YYYYMMDD/ODR_STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- BE Root: là thư mục Root mà BE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- OTDR là thư mục chứa file OTDR mà BE cần lấy về. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  66 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+ngày FE sẽ sinh đẩy file OTDR vào một ngày mới. 
+
+- ODR _STATION_YYYYMMDD_HH24MISS_0001.txt là tên file ODR cần lấy. Trong đó: 
+o MTC: tiền tố mô tả đây là file MTC 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 5 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Tên file: ODR _STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- ODR: tiền tố mô tả đây là file Offline. 
+- STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. 
+- YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file, gửi lại file khi khôi phục kết nối. 
+- 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+- Txt: định dạng là file text. 
+
+Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+
+b. Request Id: Transaction ID của phương tiện được tạo ra ở FE, phục vụ việc đối soát dữ liệu 
+BE và FE. 
+
+c. Station: mã trạm 
+d. Lane: mã làn  
+e. Etag: mã etag của phương tiện 
+f. Plate: biển số xe nhận dạng được từ Camera 
+g. CheckStatus Datetime: ngày giờ xe vào trạm 
+h. Commit/Rollback Datetime: ngày giờ đóng giao dịch 
+i. Trạng thái: trạng thái giao dịch 
+
+a. 0: xe đi qua 
+b. 1: xe không đi qua 
+
+j. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, cách nhau 
+bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh sẽ là 
+như sau: ticketid_mediatype_sequence_laneYYYYMMDDHHMISS.jpg. Trong đó, ảnh sẽ được 
+lưu ở thư mục 
+/Media/ETC/YYYYMMDD/transid_mediatype_sequence_laneYYYYMMDDHHMISS . Mỗi 
+trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. ETC: thư mục chứa file ảnh ETC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. TransId: là TRANSACTION ID của giao dịch của Frontend 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  67 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+e. Mediatype: loại ảnh chụp:  
+ 01: chụp làn(bắt buộc) 
+ 02: chụp biển (bắt buộc) 
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+Có thể thêm loại ảnh theo thực tế triển khai. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+4.3.3.7 ETDR – GIAO DỊCH ETC QUA TRẠM KÍN 
+ETDR là file chứa các giao dịch ETC xe qua trạm tại Front End.  
+
+FrontEnd sẽ mở SFTP Server và cấp quyền cho Back End kết nối vào để lấy file về. Back End sẽ được quyền 
+đọc một thư mục riêng (gọi là BE Root). Back End sẽ không vào được FE server theo giao thức SSH. 
+
+Tần xuất sinh file: 5 phút/file. 
+
+Cấu trúc thư mục: BE Root/ETDR/YYYYMMDD/ETC_STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- BE Root: là thư mục Root mà BE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- ETDR là thư mục chứa file ETDR mà BE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày FE sẽ sinh đẩy file ETDR vào một ngày mới. 
+- ETC_STATION_YYYYMMDD_HH24MISS_0001.txt là tên file ETDR cần lấy. Trong đó: 
+
+o ETC: tiền tố mô tả đây là file ETC 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 5 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+
+a. Station: mã trạm của trạm ra 
+b. Lane: mã làn của trạm ra 
+c. Ticket ID: mã giao dịch nhận được từ Back End. Trường hợp không có Ticket ID, thì dùng 
+
+Transaction ID của Front End. 
+d. Etag: mã etag của phương tiện của trạm ra 
+e. Plate: biển số xe nhận dạng được từ Camera của trạm ra 
+f. Checkin Datetime: ngày giờ xe vào trạm ra. Định dạng dd/mm/yyyy  hh24:mi:ss 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  68 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+g. Commit/Rollback Datetime: ngày giờ đóng giao dịch. Định dạng dd/mm/yyyy  hh24:mi:ss 
+h. Price: phí qua trạm thực tế trừ giao dịch của trạm ra (có thể là bằng với số tiền trả về trong 
+
+bản tin Checkin Resp, hoặc là số tiền FE tự tính). Nếu không tính giá thì đặt = 0. 
+i. Vehicle Type: Loại xe của trạm ra 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+j. Ticket Type: Loại vé của trạm ra 
+
+Ticket Type Description 
+0 Vé tháng 
+1 Vé lượt 
+2 Vé quí 
+3 Vé năm 
+
+k. Trạng thái nhận diện biển số của FE của trạm ra 
+a. 0 – không khớp 
+b. 1- khớp so với biển gắn với Etag 
+c. 2- không nhận diện dc 
+
+l. Trạng thái: trạng thái giao dịch của trạm ra (trừ tiền) 
+a. 0: ETC trừ tiền thành công 
+b. 1: ETC trừ tiền lỗi 
+c. 3: ETC rollback thành công 
+d. 4: ETC rollback lỗi 
+
+m. Image của trạm ra: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, 
+cách nhau bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file 
+ảnh sẽ là như sau: ticketid_mediatype_sequence_laneYYYYMMDDHHMISS.jpg. Trong đó, 
+ảnh sẽ được lưu ở thư mục 
+/Media/ETC/YYYYMMDD/ticketid_mediatype_sequence_laneYYYYMMDDHHMISS. Mỗi 
+trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. ETC: thư mục chứa file ảnh ETC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh CHECKIN. 
+e. Mediatype: loại ảnh chụp:  
+
+ 01: chụp làn (bắt buộc) 
+ 02: chụp biển (bắt buộc) 
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  69 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Có thể thêm loại ảnh theo thực tế triển khai. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+n. White list/Black list/ETC normal của trạm ra 
+a. N- ETC Normal 
+b. W- White 
+c. B- Black list 
+
+o. Station IN: mã trạm của trạm v ào 
+p. Lane IN: mã làn của trạm v ào 
+q. Etag IN: mã etag của phương tiện của trạm vào 
+r. Plate IN: biển số xe nhận dạng được từ Camera của trạm vào 
+s. Checkin Datetime IN: ngày giờ xe vào trạm vào. Định dạng dd/mm/yyyy  hh24:mi:ss 
+t. Commit/Rollback Datetime_in: ngày giờ đóng giao dịch của trạm vào. Định dạng 
+
+dd/mm/yyyy  hh24:mi:ss 
+u. Vehicle Type IN: Loại xe của trạm vào 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+v. Trạng thái nhận diện biển số của FE của trạm vào 
+a. 0 – không khớp 
+b. 1- khớp so với biển gắn với Etag 
+c. 2- không nhận diện dc 
+
+w. Image của trạm vào: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch, 
+cách nhau bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file 
+ảnh sẽ là như sau: ticketid_mediatype_sequence_laneYYYYMMD.jpg. Trong đó, ảnh sẽ được 
+lưu ở thư mục /Media/ETC/YYYYMMDD/ticketid_mediatype_sequence_laneYYYYMMD. Mỗi 
+trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. ETC: thư mục chứa file ảnh ETC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh CHECKIN. 
+e. Mediatype: chụp làn hay chụp biển số. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  70 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+x. White list/Black list/ETC normal của trạm vào 
+
+a. N- ETC Normal 
+b. W- White 
+c. B- Black list 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+4.3.3.8 MTDR – GIAO DỊCH MTC QUA TRẠM KÍN 
+MTDR là file chứa các giao dịch MTC xe qua trạm tại Front End. File định dạng CSV (các trường cách nhau 
+bằng dấu phẩy “,”). File được xuất ở trạm ra. 
+
+FrontEnd sẽ mở SFTP Server và cấp quyền cho Back End kết nối vào để lấy file về. Back End sẽ được quyền 
+đọc một thư mục riêng (gọi là BE Root). Back End sẽ không vào được FE server theo giao thức SSH. 
+
+Tần xuất sinh file: 5 phút/file. 
+
+Cấu trúc thư mục: BE Root/MTDR/YYYYMMDD/MTC_STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- BE Root: là thư mục Root mà BE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- MTDR là thư mục chứa file MTDR mà BE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày FE sẽ sinh đẩy file MTDR vào một ngày mới. 
+- MTC_STATION_YYYYMMDD_HH24MISS_0001.txt là tên file ETDR cần lấy. Trong đó: 
+
+o MTC: tiền tố mô tả đây là file MTC 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 5 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+
+a. Request Id: Transaction ID do MTC tạo ra, phục vụ việc đối soát dữ liệu BE, FE 
+b. Station: mã trạm ra 
+c. Lane: mã làn của trạm ra 
+d. Plate: biển số xe nhận dạng được từ Camera ở trạm ra 
+e. Ticket: mã vé do MTC tạo ra. 
+f. ETAG: ETAG của phương tiện ở trạm ra nếu có 
+g. Datetime: ngày giờ thực hiện trừ tiền. 
+h. Price: phí qua trạm. Nếu không tính giá thì đặt = 0. 
+i. Vehicle Type: Loại xe, loại phương tiện ở trạm ra 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  71 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+j. Ticket Type: Loại vé, xác định ở trạm ra 
+
+Ticket Type Description 
+0 Vé tháng 
+1 Vé lượt 
+2 Vé quí 
+3 Vé năm 
+
+k. Image: danh sách tên file ảnh chụp biển số xe và ô tô ở trạm ra liên quan đến giao dịch, cách 
+nhau bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file ảnh sẽ 
+là như sau: ticketid_mediatype_sequence_laneYYYYMMDDHHMISS.jpg. Trong đó, ảnh sẽ 
+được lưu ở thư mục 
+/Media/MTC/YYYYMMDD/ticketid_mediatype_sequence_laneYYYYMMDDHHMISS. Mỗi 
+trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. MTC: là thư mục file ảnh MTC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid:  
+
+a. Trường hợp xe qua trạm vào là ETC: là id của giao dịch trong hệ thống. Do 
+BE trả về qua lệnh CHECKIN 
+
+b. Trường hợp xe qua trạm vào là MTC: mã vé do MTC tạo ra 
+e. Mediatype: loại ảnh chụp:  
+
+ 01: chụp làn (bắt buộc) 
+ 02: chụp biển (bắt buộc)  
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+Có thể thêm loại ảnh theo thực tế triển khai. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+l. White list/Black list/ETC normal 
+a. N- ETC Normal 
+b. W- White 
+c. B- Black list 
+
+m. Station IN: mã trạm vào 
+n. Lane IN: mã làn ở trạm vào 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  72 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+o. Plate IN: biển số xe nhận dạng được từ Camera ở trạm vào 
+p. ETAG IN: ETAG của phương tiện ở trạm vào nếu có 
+q. Datetime IN: ngày giờ xe qua trạm vào 
+r. Vehicle Type IN: Loại xe, loại phương tiện ở trạm vào 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+s. Image IN: danh sách tên file ảnh chụp biển số xe và ô tô ở trạm vào liên quan đến giao dịch, 
+cách nhau bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file 
+ảnh sẽ là như sau: ticketid_mediatype_sequence_laneYYYYMMD.jpg. Trong đó, ảnh sẽ được 
+lưu ở thư mục /Media/MTC/YYYYMMDD/ticketid_mediatype_sequence_lane 
+YYYYMMDDHHMISS. Mỗi trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. MTC: là thư mục file ảnh MTC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid:  
+
+a. Trường hợp xe qua trạm vào là ETC: là id của giao dịch trong hệ thống. Do 
+BE trả về qua lệnh CHECKIN 
+
+b. Trường hợp xe qua trạm vào là MTC: mã vé do MTC tạo ra 
+e. Mediatype: chụp làn hay chụp biển số. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+t. IO Type: Đặc điểm vào-ra của giao dịch MTC 
+
+IO type Description 
+0 Xe qua trạm vào là ETC, xe qua trạm ra là MTC 
+1 Xe qua trạm vào là MTC, xe qua trạm ra là MTC 
+
+u. Ticket ID: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh CHECKIN trong trường 
+hợp xe qua trạm vào là ETC 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+4.3.3.9 OFFLINE DR – GIAO DỊCH ETC QUA TRẠM KÍN KHI XỬ LÝ 
+OFFLINE 
+
+OFFLCDR là file chứa các giao dịch ETC xe qua trạm tại Front End khi không có kết nối tới server trung tâm. 
+File định dạng CSV (các trường cách nhau bằng dấu phẩy “,”) 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  73 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+FrontEnd sẽ mở SFTP Server và cấp quyền cho Back End kết nối vào để lấy file về. Back End sẽ được quyền 
+đọc một thư mục riêng (gọi là BE Root). Back End sẽ không vào được FE server theo giao thức SSH. 
+
+Tần suất sinh file: 6 phút/file. 
+
+Cấu trúc thư mục: BE Root/ OTDR /YYYYMMDD/ODR_STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- BE Root: là thư mục Root mà BE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- OTDR là thư mục chứa file OTDR mà BE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày FE sẽ sinh đẩy file OTDR vào một ngày mới. 
+- ODR _STATION_YYYYMMDD_HH24MISS_0001.txt là tên file ODR cần lấy. Trong đó: 
+
+o MTC: tiền tố mô tả đây là file MTC 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 5 phút/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+Tên file: ODR _STATION_YYYYMMDD_HH24MISS_0001.txt. Trong đó: 
+
+- ODR: tiền tố mô tả đây là file Offline. 
+- STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. 
+- YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file, gửi lại file khi khôi phục kết nối. 
+- 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+- Txt: định dạng là file text. 
+
+Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+
+a. Request Id: Transaction ID của phương tiện được tạo ra ở FE, phục vụ việc đối soát dữ liệu 
+BE và FE. 
+
+b. Station: mã trạm ra 
+c. Lane: mã làn của trạm ra 
+d. Etag: mã etag của phương tiện của trạm ra 
+e. Plate: biển số xe nhận dạng được từ Camera của trạm ra 
+f. CheckStatus Datetime: ngày giờ xe vào trạm của trạm ra 
+g. Commit/Rollback Datetime: ngày giờ đóng giao dịch của trạm ra 
+h. Trạng thái: trạng thái giao dịch của trạm ra 
+
+a. 0: xe đi qua 
+b. 1: xe không đi qua 
+
+i. Image: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch của trạm ra, 
+cách nhau bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên file 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  74 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+ảnh sẽ là như sau: ticketid_mediatype_sequence_laneYYYYMMDDHHMISS.jpg. Trong đó, 
+ảnh sẽ được lưu ở thư mục 
+/Media/ETC/YYYYMMDD/ticketid_mediatype_sequence_laneYYYYMMDDHHMISS. Mỗi 
+trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. ETC: thư mục chứa file ảnh ETC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh CHECKIN. 
+e. Mediatype: loại ảnh chụp:  
+
+ 01: chụp làn (bắt buộc) 
+ 02: chụp biển (bắt buộc).  
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+Có thể thêm loại ảnh theo thực tế triển khai. 
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+
+dịch (mỗi ticket id). 
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+j. Station IN: mã trạm vào 
+k. Lane IN: mã làn của trạm vào 
+l. Etag IN: mã etag của phương tiện của trạm vào 
+m. Plate IN: biển số xe nhận dạng được từ Camera của trạm vào 
+n. CheckStatus Datetime IN: ngày giờ xe vào trạm của trạm vào 
+o. Commit/Rollback Datetime IN: ngày giờ đóng giao dịch của trạm vào 
+p. Trạng thái vào: trạng thái giao dịch của trạm vào 
+
+a. 0: xe đi qua 
+b. 1: xe không đi qua 
+
+q. Image IN: danh sách tên file ảnh chụp biển số xe và ô tô liên quan đến giao dịch của trạm 
+vào, cách nhau bằng dấu “|” (Back End dùng thông tin này để lấy ảnh về từ Front End). Tên 
+file ảnh sẽ là như sau: ticketid_mediatype_sequence_laneYYYYMMD.jpg. Trong đó, ảnh sẽ 
+được lưu ở thư mục /Media/ETC/YYYYMMDD/ticketid_mediatype_sequence_lane 
+YYYYMMDDHHMISS. Mỗi trường có { nghĩa sau: 
+
+a. /Media: tên thư mục chứa file ảnh 
+b. ETC: thư mục chứa file ảnh ETC. 
+c. YYYYMMDD: ngày chụp giao dịch 
+d. Ticketid: là id của giao dịch trong hệ thống. Do BE trả về qua lệnh CHECKIN. 
+e. Mediatype: loại ảnh chụp:  
+
+ 01: chụp làn (bắt buộc) 
+ 02: chụp biển (bắt buộc)  
+ 03: ảnh chụp biển số sau (không bắt buộc).  
+
+Có thể thêm loại ảnh theo thực tế triển khai.. 
+ 
+
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  75 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+f. Sequence: là thứ tự chụp ảnh của phương tiện. Bắt đầu từ 0 đến n cho mỗi giao 
+dịch (mỗi ticket id). 
+
+g. Lane: (2 kí tự) là ảnh chụp làn nào tại trạm. 
+h. YYYYMMDDHHMISS: thời gian chụp ảnh theo ngày giờ phút giây. 
+
+Nếu không có dữ liệu, cũng sinh tên file. Nhưng nội dung trống. 
+
+4.3.3.10 COMMUTERTICKET – DANH SÁCH VÉ THÁNG, QUÝ 
+Là danh sách vé tháng/qu{ được sử dụng để đồng bộ sang hệ thống của đơn vị khác, thời gian đồng bộ là 30 
+phút/lần và có thể thay đổi được trong file cấu hình.  
+
+Tần xuất sinh file: 11 phút/file. 
+
+BackEnd sẽ mở SFTP Server và cấp quyền cho Front End kết nối vào để lấy file về. Mỗi một Front End sẽ được 
+quyền đọc một thư mục riêng (gọi là FE Root). Front End sẽ không vào được BE server theo giao thức SSH. 
+
+Cấu trúc thư mục: FE Root/CommuterTicket/YYYYMMDD/STATION_YYYYMMDDHH24MISS.txt. Trong đó: 
+
+- FE Root: là thư mục Root mà FE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- CommuterTicket là thư mục chứa file Change CommuterTicket mà FE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày BE sẽ sinh đẩy file Status List vào một ngày mới. 
+- STATION_YYYYMMDDHH24MISS.txt là tên file White List cần lấy. Trong đó: 
+
+o STATION: ID của trạm. Gồm 3 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+
+o YYYYMMDDHH24MISS: ngày giờ phút giây tạo file (cách nhau 30 phút/lần – tùy theo cấu 
+hình). 14 ký tự 
+
+Các trường gồm: 
+
+ Đối với trạm mở 
+a. Etag: mã etag của phương tiện. 24 kí tự 
+b. Biển số xe. Không có dấu – hoặc. Chỉ gồm các số và chữ cái liền nhau. 
+
+c. Loại phương tiện 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+ 
+d. Ticket Type Loại giá vé 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  76 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+Ticket Type Description 
+T Vé tháng 
+Q Vé quí 
+N Vé năm 
+
+ 
+e. Price Ticket Type - Loại giá vé miễn giảm 
+
+Price Ticket Description 
+Type 
+1 Giá thường 
+2 Giá ưu đãi 
+3 Giảm giá địa bàn trạm Tư Nghĩa 
+4 Miễn giảm địa phương 
+5 Giảm giá 50% 
+6 Giảm giá Trạm Hoàng Mai 
+7 Vé tháng/quý Cầu Bến Thủy 
+8 Giảm giá 40% 
+9 Giảm giá 20% 
+10 Giảm giá từ 30% đến 35% 
+
+Loại vé miễn giảm có thể được cập nhật thêm theo thực tế vận hành. 
+f. Giá tiền 
+g. Ngày hiệu lực (DD/MM/YYYY HH24:MI:SS) 
+h. Ngày tạo vé (DD/MM/YYYY HH24:MI:SS) 
+i. Ngày kết thúc (DD/MM/YYYY HH24:MI:SS) 
+j. Trạng thái:  
+
+a. 1: Có hiệu lực 
+b. 0: Không có hiệu lực. 
+
+4.3.3.11 PRICELIST – Danh sách thiết lập giá vé lượt 
+Là danh sách giá vé lượt được thiết lập trên backend. Danh sách này được sử dụng trong trường hợp xe đi vé 
+lượt offline cần biết thông tin giá vé.  
+
+Tần xuất sinh file: 1 giờ/file. 
+
+BackEnd sẽ mở SFTP Server và cấp quyền cho Front End kết nối vào để lấy file về. Mỗi một Front End sẽ được 
+quyền đọc một thư mục riêng (gọi là FE Root). Front End sẽ không vào được BE server theo giao thức SSH. 
+
+Cấu trúc thư mục: FE Root/Pricelist/YYYYMMDD/PL_STATION_YYYYMMDD_HH24MISS_0001.CSV 
+
+- FE Root: là thư mục Root mà FE được cấu hình được phép truy nhập sau khi kết nối SFTP. 
+- Pricelist là thư mục chứa file Price List mà FE cần lấy về. 
+- YYYYMMDD: là thư mục sinh tên theo ngày (định dạng năm-4 kí tự, tháng 2 ký tự, ngày 2 kí tự). Mỗi 
+
+ngày BE sẽ sinh đẩy file Price List vào một ngày mới. 
+- PL_STATION_YYYYMMDD_HH24MISS_0001.txt là tên file Price List cần lấy. Trong đó: 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  77 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+o PL: tiền tố mô tả đây là file price list 
+o STATION: ID của trạm. Gồm 4 kí tự. Ví dụ 0001. Nếu Station ID là 320 thì giá trị sẽ là ’0320’. 
+
+Station ID sẽ được cấp riêng cho mỗi trạm theo cấu hình chung của hệ thống. 
+o YYYYMMDD_HH24MISS: ngày giờ phút giây tạo file (cách nhau 6 tiếng/lần – tùy theo cấu 
+
+hình). Gồm 17 kí tự 
+o 0001: số file được sinh tuần tự từ 0000 đến 9999, hết file lại về 0000, theo sequence. 
+
+- Các trường cách nhau bởi dấu phẩy. Cuối trường thứ 4 cách nhau bởi dấu chấm phẩy, gồm: 
+o Vehicle Type: Loại phương tiện 
+
+Vehicle Type Description 
+1 Xe < 12 chỗ, xe tải < 2 tấn; xe khách công cộng. 
+2 Xe 12-30 chỗ; xe tải 2 - 4 tấn                   
+3 Xe > 31 chỗ; xe tải 4 - 10 tấn                   
+4 Xe 10 - 18 tấn; xe Container 20 fit              
+5 Xe tải > 18 tấn; xe Container 40 fit             
+
+o Price Ticket Type - Loại giá vé miễn giảm 
+
+Price Ticket Description 
+Type 
+1 Giá thường 
+2 Giá ưu đãi 
+3 Giảm giá địa bàn trạm Tư Nghĩa 
+4 Miễn giảm địa phương 
+5 Giảm giá 50% 
+6 Giảm giá Trạm Hoàng Mai 
+7 Vé tháng/quý Cầu Bến Thủy 
+8 Giảm giá 40% 
+9 Giảm giá 20% 
+10 Giảm giá từ 30% đến 35% 
+
+o Effective_datetime: Ngày bắt đầu hiệu lực của bảng giá 
+o End_datetime: Ngày kết thúc hiệu lực của bảng giá 
+o Price: Giá vé 
+
+4.3.4 Yêu cầu về tải xử lý 
+Yêu cầu đảm bảo trong vòng 30s, 99,999% giao dịch có thể lấy được toàn bộ file mới phát sinh của hệ thống. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  78 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+5 PHƢƠNG PHÁP BẢO ĐẢM AN TOÀN THÔNG 
+TIN 
+
+5.1 BẢO MẬT HẠ TẦNG VÀ HỆ THỐNG 
+5.1.1 Đƣờng truyền vật lý giữa Front End và Back End 
+
+- Kênh riêng, chỉ dùng cho nội bộ, không đi qua Internet. Không có bên thứ ba ngoài VETC và đối tác 
+cung cấp đường truyền có thể truy nhập/tác động. 
+
+- Hai kênh độc lập từ hai nhà cung cấp khác nhau để đảm bảo tính sẵn sàng. 
+
+5.1.2 Firewall và IPS 
+5.1.2.1 Hệ thống Firewall và VPN tại Internet-DMZ 
+
+- Có nhiệm vụ bảo vệ và kiểm soát truy cập vào và ra vùng DMZ, thực hiện cung cấp các dịch vụ (Web, 
+Mail, VPN…) ra bên ngoài internet. Vùng Internet-DMZ gồm hai thiết bị Firewall hoạt động ở chế độ 
+sẵn sàng cao, khi một trong hai thiết bị gặp sự cố hệ thống vẫn hoạt động bình thường. 
+
+ 
+
+5.1.2.2 Hệ thống Firewall tại WAN 
+- Có nhiệm vụ bảo vệ và kiểm soát truy cập vào và ra Trung tâm dữ liệu từ WAN (Các trạm thu phí, 
+
+TASCO). Vùng WAN gồm hai thiết bị Firewall hoạt động ở chế độ sẵn sàng cao, khi một trong hai thiết 
+bị gặp sự cố hệ thống vẫn hoạt động bình thường. 
+
+5.1.2.3 Hệ thống Firewall và IPS tại Core: 
+- Có nhiệm vụ bảo vệ, chống tấn công xâm nhập vào các server vùng Core từ Internet, WAN. Vùng 
+
+Core gồm thiết bị Firewall/IPS hoạt động ở chế độ sẵn sàng cao, khi một trong hai thiết bị gặp sự cố 
+hệ thống vẫn hoạt động bình thường 
+
+5.1.2.4 Hệ thống IPS tại Internet-DMZ:  
+- Có nhiệm vụ bảo vệ, chống tấn công xâm nhập vào các server vùng DMZ từ Internet, ngăn chặn các 
+
+tấn công vào server vùng DMZ từ các kết nối vùng WAN. Vùng Internet-DMZ gồm hai thiết bị IPS hoạt 
+động ở chế độ sẵn sàng cao, khi một trong hai thiết bị gặp sự cố hệ thống vẫn hoạt động bình 
+thường. 
+
+5.1.3 Hệ thống Antivirus 
+- Hệ thống Antivirus đảm bảo ngăn chặn sự lây nhiễm mã độc từ internet, từ các kết nối người dùng 
+
+qua WAN đến các server trong Trung tâm dữ liệu. 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  79 of 80 
+
+ 
+
+
+
+Phương án tích hợp Front End và Back End (version 1.14) 
+ 
+
+ 
+ 
+
+5.2 BẢO MẬT LỚP ỨNG DỤNG 
+5.2.1 Authentication, Authorisation và Accounting 
+
+- Bảo mật theo tài khoản và mật khẩu. Chỉ những tài khoản đủ thẩm quyền mới có thể kết nối đến 
+Back End. 
+
+- Bảo mật theo IP đăng nhập. Chỉ từ tài khoản tại những máy chủ được phân quyền mới có thể kết nối. 
+- Khóa mã được qui định riêng cho từng Front End. Front End cần có cơ chế để bảo mật các thông tin 
+
+này. Mỗi một Front End sẽ được cung cấp một khóa khác nhau, đảm bảo thông tin đi trên đường 
+truyền là đã được mã hóa với bên thứ ba (ngoài Front End và Back End). 
+
+5.2.2 Đảm bảo cân bằng CIA 
+- Dữ liệu phải được đặt ở nơi an toàn, có thể được mã hóa hoặc chuyển đổi dạng thông tin khó đọc 
+
+bằng mắt thường. 
+- Dữ liệu phải có cơ chế sao lưu và phục hồi hợp lý, tránh gây thất thoát dữ liệu. 
+- Dữ liệu trong khi truyền tải cần được mã hóa hoặc được bảo vệ bởi các giao thức có sử dụng mã hóa, 
+
+an toàn cao (HTTPS, SSL, SSH, SFTP, VPN…) 
+- Không đặt dữ liệu nhạy cảm chung với các thông tin có thể cung cấp công khai cho người dùng bình 
+
+thường. 
+- Có cơ chế bảo vệ các file cấu hình của hệ thống, của ứng dụng (sử dụng mã hóa, mật khẩu để mở 
+
+file…) 
+
+5.2.2.1 Mã hóa bản tin dữ liệu trên đường truyền.  
+- Đây là mức mã hóa cao nhất trong bảo mật thông tin. Toàn bộ nội dung bản tin gửi đi về giữa Front 
+
+End và Back End được mã hóa trên đường truyền. Bản thân dữ liệu Binary chưa mã hóa cũng đã là 
+khó nhìn với người dùng thông thường. 
+
+- Khóa để mã hóa và giải mã sẽ được áp dụng/qui định với từng trạm khác nhau. 
+
+5.2.2.1.1 Giao thức mã hóa 
+- Mã hóa 2 chiều theo chuẩn Tripple DES (3DES) hoặc AES 128, khóa bí mật cung cấp riêng cho từng 
+
+Front End. 
+- Hiện tại BE đang mặc định cung cấp theo chuẩn AES 128, key mã hóa có độ dài 128 bits(16 bytes). 
+
+5.2.2.1.2 Phƣơng pháp quản lý mã 
+- Mỗi một trạm thu phí sẽ được Back End cung cấp một tài khoản và mật khẩu đăng nhập, và được 
+
+khai báo chính sách đăng nhập chỉ từ một/một vài IP nhất định, và một khóa được cung cấp ứng bí 
+mật chỉ cho trạm đó dùng để mã hóa/giải mã gói tin. 
+
+- Trước khi gửi một bản tin, Front End sẽ mã hóa và đóng gói bản tin gửi đến Back End. Back End sẽ 
+giải mã ra bản tin nguyên gốc rồi xử lý nghiệp vụ. 
+
+ 
+
+ 
+All contents are Copyright © 1988–2015 FPT Information System. All rights reserved  Page  80 of 80

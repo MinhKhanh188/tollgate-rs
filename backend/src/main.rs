@@ -22,18 +22,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             let row: (i32,) = sqlx::query_as("SELECT 1").fetch_one(&pool).await?;
             println!("Verification query (SELECT 1) returned: {}", row.0);
 
-            // Build our application with a route
-            let app = Router::new()
-                .route("/handshake", post(api::routes::handshake))
-                .route("/transactions", post(api::routes::create_transaction))
-                .layer(CorsLayer::permissive())
-                .with_state(pool);
-
-            // Run it
             let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
-            println!("Backend listening on {}", addr);
+            println!("Backend socket listening on {}", addr);
             let listener = tokio::net::TcpListener::bind(addr).await?;
-            axum::serve(listener, app).await?;
+
+            loop {
+                let (stream, _) = listener.accept().await?;
+                let pool_clone = pool.clone();
+                tokio::spawn(async move {
+                    crate::api::socket_server::handle_client(stream, pool_clone).await;
+                });
+            }
         }
         Err(e) => {
             eprintln!("Failed to connect to the database: {}", e);
