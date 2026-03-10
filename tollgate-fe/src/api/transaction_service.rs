@@ -63,6 +63,7 @@ pub struct TransactionResponse {
     pub amount: Option<f64>,
 }
 
+use crate::api::routes::AppState;
 use crate::api::tcoc::{
     CheckinRequest, CheckinResponse, CommitRequest, CommitResponse, TcocHeader, read_header,
     write_header,
@@ -70,11 +71,13 @@ use crate::api::tcoc::{
 use tokio::net::TcpStream;
 
 pub async fn call_create_transaction(
+    state: AppState,
     req: CreateTransactionRequest,
 ) -> Result<TransactionResponse, String> {
-    let mut stream = TcpStream::connect("127.0.0.1:8080")
-        .await
-        .map_err(|e| e.to_string())?;
+    let mut lock = state.stream.lock().await;
+    let stream = lock
+        .as_mut()
+        .ok_or("Connection not established (call handshake first)".to_string())?;
 
     // Step 1: Checkin
     let checkin_req = CheckinRequest {
@@ -93,16 +96,13 @@ pub async fn call_create_transaction(
         session_id: 9999, // use existing connection fake session
     };
 
-    write_header(&mut stream, &checkin_header)
+    write_header(stream, &checkin_header)
         .await
         .map_err(|e| e.to_string())?;
-    checkin_req
-        .write(&mut stream)
-        .await
-        .map_err(|e| e.to_string())?;
+    checkin_req.write(stream).await.map_err(|e| e.to_string())?;
 
-    let checkin_resp_header = read_header(&mut stream).await.map_err(|e| e.to_string())?;
-    let checkin_resp = CheckinResponse::read(&mut stream)
+    let checkin_resp_header = read_header(stream).await.map_err(|e| e.to_string())?;
+    let checkin_resp = CheckinResponse::read(stream)
         .await
         .map_err(|e| e.to_string())?;
 
@@ -128,16 +128,13 @@ pub async fn call_create_transaction(
         session_id: checkin_header.session_id,
     };
 
-    write_header(&mut stream, &commit_header)
+    write_header(stream, &commit_header)
         .await
         .map_err(|e| e.to_string())?;
-    commit_req
-        .write(&mut stream)
-        .await
-        .map_err(|e| e.to_string())?;
+    commit_req.write(stream).await.map_err(|e| e.to_string())?;
 
-    let commit_resp_header = read_header(&mut stream).await.map_err(|e| e.to_string())?;
-    let _commit_resp = CommitResponse::read(&mut stream)
+    let commit_resp_header = read_header(stream).await.map_err(|e| e.to_string())?;
+    let _commit_resp = CommitResponse::read(stream)
         .await
         .map_err(|e| e.to_string())?;
 

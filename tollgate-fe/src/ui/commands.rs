@@ -1,6 +1,9 @@
 // tollgate-fe\src\ui\commands.rs
 use crate::api::handshake_service::{HandshakeRequest, call_handshake};
+use crate::api::routes::AppState;
 use crate::api::transaction_service::{CreateTransactionRequest, call_create_transaction};
+use std::sync::Arc;
+use tokio::sync::Mutex;
 
 pub async fn test_handshake() {
     println!("Testing Handshake...");
@@ -10,7 +13,11 @@ pub async fn test_handshake() {
         lane_id: "LANE_01".to_string(),
     };
 
-    match call_handshake(req).await {
+    let state = AppState {
+        stream: Arc::new(Mutex::new(None)),
+    };
+
+    match call_handshake(state, req).await {
         Ok(res) => println!("Handshake Success: {:?}", res),
         Err(e) => eprintln!("Handshake Failed: {}", e),
     }
@@ -35,7 +42,11 @@ pub async fn test_transaction() {
         status: Some("CHECKIN".to_string()),
     };
 
-    match call_create_transaction(req).await {
+    let state = AppState {
+        stream: Arc::new(Mutex::new(None)),
+    };
+
+    match call_create_transaction(state, req).await {
         Ok(res) => println!("Transaction Created: {:?}", res),
         Err(e) => eprintln!("Transaction Failed: {}", e),
     }
